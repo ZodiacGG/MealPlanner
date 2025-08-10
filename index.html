@@ -3,43 +3,47 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Minimalist Meal Planner</title>
+  <title>Meal Maps</title>
   <meta name="color-scheme" content="dark light">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:400,500,700&display=swap">
   <style>
     :root {
       --main-bg: #fff;
       --main-txt: #181818;
-      --card-bg: #f7f7f7;
-      --card-border: #e0e0e0;
-      --accent: #222;
-      --accent2: #5d5d5d;
+      --card-bg: #f8f9fa;
+      --card-border: #dadada;
+      --accent: #181818;
+      --accent2: #606060;
       --primary-btn: #181818;
       --primary-btn-txt: #fff;
       --input-bg: #fff;
-      --input-border: #d4d4d4;
+      --input-border: #ccc;
       --input-txt: #222;
-      --hover: #eeeeee;
+      --hover: #f3f3f3;
       --warn: #d32f2f;
       --highlight: #1976d2;
       --store-link: #0066cc;
+      --food-summary-bg: #f1f3f5;
+      --food-summary-border: #cfd8dc;
     }
     [data-theme="dark"] {
-      --main-bg: #16171a;
+      --main-bg: #18191b;
       --main-txt: #f3f3f3;
       --card-bg: #232326;
       --card-border: #28292a;
       --accent: #fafafa;
-      --accent2: #a0a0a0;
+      --accent2: #bdbdbd;
       --primary-btn: #fff;
       --primary-btn-txt: #181818;
-      --input-bg: #191a1c;
+      --input-bg: #18191b;
       --input-border: #333436;
       --input-txt: #fafafa;
-      --hover: #232326;
+      --hover: #222325;
       --warn: #ff5252;
       --highlight: #64b5f6;
       --store-link: #79baff;
+      --food-summary-bg: #232326;
+      --food-summary-border: #313338;
     }
     html, body {
       background: var(--main-bg);
@@ -53,31 +57,40 @@
       transition: background 0.32s, color 0.32s;
     }
     .container {
-      max-width: 600px;
+      width: 98vw;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 20px 8px 60px 8px;
+      padding: 24px 0 64px 0;
+      min-height: 100vh;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     .header {
       font-weight: 700;
-      font-size: 2.1em;
+      font-size: 2.35em;
       text-align: left;
-      margin: 18px 0 8px 0;
+      margin: 26px 0 8px 0;
       letter-spacing: -0.03em;
     }
     .desc {
-      font-size: 1em;
+      font-size: 1.04em;
       color: var(--accent2);
-      margin-bottom: 26px;
+      margin-bottom: 32px;
       margin-top: 0;
     }
     .card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 22px 18px 12px 18px;
-      margin-bottom: 24px;
-      box-shadow: 0 1.5px 6px 0 rgba(30,30,30,0.04);
+      border-radius: 18px;
+      padding: 32px 32px 18px 32px;
+      margin-bottom: 30px;
+      box-shadow: 0 1.5px 12px 0 rgba(30,30,30,0.04);
       transition: background 0.3s, color 0.3s;
+      width: 100%;
+      max-width: 800px;
+      position: relative;
     }
     .center { text-align: center; }
     .form-group { margin-bottom: 13px;}
@@ -151,46 +164,84 @@
       margin-top: 8px;
       float:right;
     }
-    /* Minimal table */
     .meal-table { width: 100%; border-collapse: collapse; margin-bottom: 13px;}
-    .meal-table th, .meal-table td { border-bottom: 1px solid var(--card-border); padding: 5.5px 6px; text-align: left;}
-    .meal-table th { color: var(--accent2); font-weight: 500; font-size: 0.97em; background: none;}
-    .meal-table td { color: var(--main-txt); font-size: 0.98em;}
+    .meal-table th, .meal-table td { border-bottom: 1px solid var(--card-border); padding: 7px 10px; text-align: left;}
+    .meal-table th { color: var(--accent2); font-weight: 500; font-size: 1em; background: none;}
+    .meal-table td { color: var(--main-txt); font-size: 1em;}
     .meal-link { color: var(--store-link); cursor:pointer; text-decoration: underline;}
-    .meal-recipe-content { background: var(--hover); padding:10px 12px; border-radius:6px; margin:7px 0 6px 0; color:var(--main-txt);}
+    .meal-recipe-content { background: var(--hover); padding:10px 14px; border-radius:7px; margin:8px 0 7px 0; color:var(--main-txt);}
     [data-theme="dark"] .meal-recipe-content { background: #181a1d; color: #fff;}
     .warn-msg { color: var(--warn); font-weight: 500; margin-top: 12px; }
     .map-store-list { margin: 0 0 14px 0; padding: 0; list-style: none;}
     .map-store-list li { margin-bottom: 7px; }
     .store-link { color: var(--store-link); text-decoration: underline;}
-    .no-plan-message { color: var(--warn); font-size: 1.07em; font-weight: 600; margin: 14px 0;}
-    /* Modern modal */
+    .no-plan-message { color: var(--warn); font-size: 1.09em; font-weight: 600; margin: 14px 0;}
     .modal-bg {
       position:fixed; top:0; left:0; width:100vw; height:100vh;
       background:rgba(0,0,0,0.16); display:flex; align-items:center; justify-content:center; z-index:99;
     }
     .modal-card {
       background: var(--main-bg); color: var(--main-txt);
-      border-radius: 12px; box-shadow: 0 4px 18px 0 #0002;
-      padding: 24px 18px 18px 18px; min-width: 280px; max-width: 95vw;
+      border-radius: 14px; box-shadow: 0 4px 18px 0 #0002;
+      padding: 28px 20px 18px 20px; min-width: 280px; max-width: 94vw;
       border:1.3px solid var(--card-border);
       position: relative;
     }
-    .modal-card h2 { font-size: 1.2em; font-weight: 600; margin: 0 0 10px 0;}
+    .modal-card h2 { font-size: 1.25em; font-weight: 600; margin: 0 0 10px 0;}
     .close-modal-btn {
       position:absolute; top:13px; right:12px; background:none; border:none; font-size:1.1em; color:var(--accent2); cursor:pointer;
     }
-    /* Responsive */
-    @media (max-width:600px) {
-      .header { font-size: 1.22em;}
-      .card { padding: 13px 4px 9px 5px;}
+    /* Food summary box */
+    .food-summary-card {
+      background: var(--food-summary-bg);
+      border: 1.5px solid var(--food-summary-border);
+      border-radius: 13px;
+      padding: 20px 18px 18px 18px;
+      margin: 0 auto 40px auto;
+      box-shadow: 0 1px 3px 0 rgba(30,30,30,0.04);
+      max-width: 800px;
+      width: 100%;
+      font-size: 1.07em;
+    }
+    .food-summary-card h3 {
+      font-size:1.14em;
+      margin:0 0 7px 0;
+      font-weight:600;
+      color:var(--main-txt);
+    }
+    .food-summary-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 9px;
+    }
+    .food-summary-table th, .food-summary-table td {
+      padding: 5px 7px;
+      text-align: left;
+      border-bottom: 1px solid var(--food-summary-border);
+      color: var(--main-txt);
+      font-size: 1em;
+    }
+    .food-summary-table th { color: var(--accent2); font-weight: 500;}
+    .food-summary-warning { color: var(--warn); font-weight: 600; margin-top: 7px;}
+    @media (max-width:1100px) {
+      .container, .card, .food-summary-card { max-width: 98vw; }
+    }
+    @media (max-width:700px) {
+      .container, .card, .food-summary-card { max-width: 100vw; border-radius: 0;}
+      .card, .food-summary-card { padding: 14px 3vw 10px 3vw;}
+    }
+    @media (max-width:500px) {
+      .header { font-size: 1.13em;}
+      .card, .food-summary-card { padding: 8px 1vw 6px 1vw;}
+      .meal-table th, .meal-table td { font-size:0.96em;padding:4px 2px;}
+      .food-summary-table th, .food-summary-table td { font-size:0.96em; padding:4px 2px;}
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="header">Minimalist Meal Planner</div>
-    <div class="desc">Create a weekly meal plan tailored to your needs and nearby grocery options.</div>
+    <div class="header">Meal Maps</div>
+    <div class="desc">Create a weekly meal plan tailored to your dietary needs and nearby grocery options.</div>
 
     <!-- Theme and logout controls -->
     <div class="switch-row" id="main-controls" style="display:none;">
@@ -200,7 +251,7 @@
 
     <!-- Login/Register -->
     <div id="auth-card" class="card">
-      <div class="center" style="font-size:1.16em;margin-bottom:8px;font-weight:500;">Sign in</div>
+      <div class="center" style="font-size:1.18em;margin-bottom:8px;font-weight:500;">Sign in</div>
       <div class="form-group">
         <label>Email</label>
         <input type="email" id="login-email" autocomplete="username">
@@ -214,7 +265,7 @@
     </div>
 
     <div id="register-card" class="card hidden">
-      <div class="center" style="font-size:1.16em;margin-bottom:8px;font-weight:500;">Create an Account</div>
+      <div class="center" style="font-size:1.18em;margin-bottom:8px;font-weight:500;">Create an Account</div>
       <div class="form-group">
         <label>Email</label>
         <input type="email" id="reg-email" autocomplete="username">
@@ -406,6 +457,8 @@
       <div id="store-reminder" class="warn-msg hidden"></div>
       <div id="mealplan-content"></div>
     </div>
+    <!-- Food summary -->
+    <div id="food-summary" class="food-summary-card hidden"></div>
   </div>
   <script>
     // --- Theme logic ---
@@ -524,6 +577,7 @@
       document.getElementById("main-controls").style.display = "none";
       document.getElementById("mealplan-card").classList.add("hidden");
       document.getElementById("profile-card").classList.add("hidden");
+      document.getElementById("food-summary").classList.add("hidden");
     }
     function getUser() { loadUsers(); return currentUser ? users[currentUser] : null;}
     function getAgeFromBirthdate(birthdate) {
@@ -537,11 +591,11 @@
       document.getElementById("auth-card").classList.add("hidden");
       document.getElementById("register-card").classList.add("hidden");
       document.getElementById("main-controls").style.display = "";
-      // Prompt for store first!
       openStoreModal();
     }
     function showProfile() {
       document.getElementById("mealplan-card").classList.add("hidden");
+      document.getElementById("food-summary").classList.add("hidden");
       document.getElementById("profile-card").classList.remove("hidden");
       loadProfileForm();
     }
@@ -563,7 +617,6 @@
       document.getElementById('profile-goal').value = user.goal || 'maintain';
       document.getElementById('profile-allergies').value = user.allergies || '';
       document.getElementById('profile-units').value = user.units || 'metric';
-      // Set weight and height fields based on units
       if((user.units || 'metric') === 'imperial') {
         document.getElementById('profile-weight').classList.add('hidden');
         document.getElementById('profile-weight-label').textContent = 'Weight (lbs)';
@@ -603,7 +656,6 @@
       user.goal = document.getElementById('profile-goal').value;
       user.allergies = document.getElementById('profile-allergies').value.trim();
       user.units = document.getElementById('profile-units').value;
-      // Convert to metric for storage
       user.weight = getMetricWeight('profile');
       user.height = getMetricHeight('profile');
       saveUsers();
@@ -645,7 +697,6 @@
       navigator.geolocation.getCurrentPosition(function(pos) {
         const lat = pos.coords.latitude, lon = pos.coords.longitude;
         fetchStoresNearby(lat, lon);
-        // Try to get country for currency
         fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`)
           .then(resp=>resp.json())
           .then(data=>{
@@ -659,7 +710,6 @@
       const zip = document.getElementById("store-zip").value.trim();
       if(!zip) { document.getElementById("store-search-status").textContent = "Enter ZIP/postal code."; return; }
       document.getElementById("store-search-status").textContent = "Searching for stores…";
-      // Get lat/lon for the zip/postal code
       fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(zip)}`)
         .then(resp=>resp.json())
         .then(arr=>{
@@ -674,7 +724,6 @@
     }
     function fetchStoresNearby(lat, lon) {
       document.getElementById("store-search-status").textContent = "Finding stores near you…";
-      // Query for supermarkets, grocery, convenience within 5km
       const query = `
         [out:json][timeout:15];
         (
@@ -705,7 +754,6 @@
             stores.push(s);
           }
         }
-        // Deduplicate by lat/lon+name
         stores = stores.filter((s,i,arr)=>arr.findIndex(x=>x.name===s.name&&Math.abs(x.lat-s.lat)<0.001&&Math.abs(x.lon-s.lon)<0.001)===i);
         displayStoreList(stores.slice(0,12), lat, lon);
       })
@@ -764,29 +812,57 @@
       setTimeout(closeStoreModal, 700);
     }
 
-    // --- Meal Plan Logic ---
-    // (Same meal database and functions as before)
+    // --- Modern seasonings logic ---
+    // Recognized seasoning words for auto-inclusion
+    const COMMON_SEASONINGS = [
+      "salt", "pepper", "lemon juice", "italian seasoning", "garlic powder", "onion powder", "cumin",
+      "paprika", "oregano", "basil", "chili powder", "soy sauce", "herbs", "curry powder", "dill", "parsley"
+    ];
+
+    // --- Meal Plan Logic (with improved seasonings) ---
     const MEALS = [
+      // --- Existing Meals ---
       {name:"Scrambled Eggs & Toast",type:"breakfast",basePrice:1.75,calories:320,protein:14,carbs:28,fat:13,recipe:{ingredients:["2 eggs","2 slices whole wheat bread","1 tsp butter","Salt & pepper"],steps:["Whisk eggs with salt and pepper.","Heat butter in pan and scramble eggs.","Toast bread.","Serve eggs with toast."]}},
-      {name:"Oatmeal with Fruit",type:"breakfast",basePrice:1.15,calories:290,protein:8,carbs:54,fat:4,recipe:{ingredients:["1/2 cup rolled oats","1 cup water or milk","1/2 banana","1/4 cup berries"],steps:["Combine oats and liquid, cook until soft.","Top with sliced banana and berries."]}},
+      {name:"Oatmeal with Fruit",type:"breakfast",basePrice:1.15,calories:290,protein:8,carbs:54,fat:4,recipe:{ingredients:["1/2 cup rolled oats","1 cup water or milk","1/2 banana","1/4 cup berries","Pinch of salt"],steps:["Combine oats and liquid, cook until soft with a pinch of salt.","Top with sliced banana and berries."]}},
       {name:"Greek Yogurt & Berries",type:"breakfast",basePrice:2.25,calories:210,protein:15,carbs:25,fat:3,recipe:{ingredients:["1 cup nonfat Greek yogurt","1/2 cup mixed berries","1 tsp honey (optional)"],steps:["Spoon yogurt into bowl.","Top with berries and drizzle honey."]}},
-      {name:"Banana Pancakes",type:"breakfast",basePrice:2.00,calories:350,protein:10,carbs:62,fat:7,recipe:{ingredients:["1 ripe banana","2 eggs","1/2 cup flour","1/2 tsp baking powder","Splash milk","Butter or oil for pan"],steps:["Mash banana and mix with eggs and milk.","Stir in flour and baking powder.","Cook pancakes on greased skillet until golden."]}},
-      {name:"Avocado Toast",type:"breakfast",basePrice:1.60,calories:270,protein:7,carbs:30,fat:14,recipe:{ingredients:["2 slices whole wheat bread","1/2 avocado","Salt & pepper","Lemon juice"],steps:["Toast bread.","Mash avocado with lemon, salt, pepper.","Spread avocado mixture on toast."]}},
-      {name:"Rice & Beans Bowl",type:"lunch",basePrice:2.50,calories:410,protein:13,carbs:80,fat:4,recipe:{ingredients:["1 cup cooked rice","1/2 cup cooked beans","Salsa","Chopped cilantro"],steps:["Warm rice and beans.","Top with salsa and cilantro."]}},
-      {name:"Turkey Sandwich",type:"lunch",basePrice:2.10,calories:340,protein:18,carbs:38,fat:9,recipe:{ingredients:["2 slices whole wheat bread","3 slices deli turkey","Lettuce","Tomato","1 tsp mayo"],steps:["Layer turkey, lettuce, tomato on bread.","Spread mayo, assemble sandwich."]}},
-      {name:"Chicken Salad",type:"lunch",basePrice:3.00,calories:370,protein:26,carbs:11,fat:22,recipe:{ingredients:["1 cup cooked, chopped chicken","2 tbsp mayo","Chopped celery","Chopped onion","Lettuce leaves"],steps:["Mix chicken, mayo, celery, onion.","Serve on lettuce leaves."]}},
-      {name:"Veggie Wrap",type:"lunch",basePrice:2.30,calories:320,protein:8,carbs:46,fat:9,recipe:{ingredients:["1 whole wheat tortilla","1/2 cup hummus","Shredded carrots","Spinach","Cucumber slices"],steps:["Spread hummus on tortilla.","Layer veggies, roll up."]}},
-      {name:"Lentil Soup & Bread",type:"lunch",basePrice:2.40,calories:330,protein:15,carbs:52,fat:4,recipe:{ingredients:["1 cup lentil soup","1 slice whole wheat bread"],steps:["Heat soup, serve with bread."]}},
-      {name:"Spaghetti Marinara",type:"dinner",basePrice:2.75,calories:450,protein:13,carbs:78,fat:7,recipe:{ingredients:["2 oz dry spaghetti","1 cup marinara","Parmesan (optional)","Basil"],steps:["Cook spaghetti, heat marinara.","Combine, top with parmesan and basil."]}},
-      {name:"Baked Chicken Thighs & Potatoes",type:"dinner",basePrice:3.80,calories:520,protein:28,carbs:32,fat:27,recipe:{ingredients:["1 chicken thigh","1 cup potatoes","Olive oil","Herbs, salt & pepper"],steps:["Toss potatoes in oil, herbs.","Roast chicken and potatoes at 400°F for 35min."]}},
-      {name:"Stir Fry Veggies & Rice",type:"dinner",basePrice:2.70,calories:400,protein:8,carbs:74,fat:7,recipe:{ingredients:["1 cup rice","2 cups mixed veggies","Soy sauce","1 tbsp oil"],steps:["Stir fry veggies in oil.","Add cooked rice and soy sauce, stir until hot."]}},
-      {name:"Turkey Meatballs & Pasta",type:"dinner",basePrice:3.50,calories:480,protein:25,carbs:57,fat:16,recipe:{ingredients:["3 turkey meatballs","1 cup pasta","1/2 cup marinara","Parmesan"],steps:["Cook pasta, heat meatballs in marinara.","Serve together with cheese."]}},
-      {name:"Tofu Curry & Rice",type:"dinner",basePrice:2.90,calories:390,protein:14,carbs:52,fat:12,recipe:{ingredients:["1/2 block firm tofu","1 cup cooked rice","1/2 cup curry sauce","Peas"],steps:["Cube tofu, cook in curry sauce with peas.","Serve over rice."]}},
-      {name:"Apple & Peanut Butter",type:"snack",basePrice:0.90,calories:160,protein:4,carbs:29,fat:6,recipe:{ingredients:["1 apple","1 tbsp peanut butter"],steps:["Slice apple, dip in peanut butter."]}},
-      {name:"Banana",type:"snack",basePrice:0.55,calories:95,protein:1,carbs:24,fat:0,recipe:{ingredients:["1 banana"],steps:["Peel and eat."]}},
-      {name:"Carrots & Hummus",type:"snack",basePrice:1.20,calories:130,protein:3,carbs:21,fat:5,recipe:{ingredients:["1 cup carrot sticks","2 tbsp hummus"],steps:["Dip carrots in hummus."]}},
-      {name:"String Cheese",type:"snack",basePrice:0.80,calories:80,protein:7,carbs:1,fat:6,recipe:{ingredients:["1 stick string cheese"],steps:["Unwrap and eat."]}},
-      {name:"Trail Mix",type:"snack",basePrice:1.10,calories:170,protein:5,carbs:15,fat:10,recipe:{ingredients:["1/4 cup trail mix"],steps:["Enjoy as a snack."]}}
+      {name:"Banana Pancakes",type:"breakfast",basePrice:2.00,calories:350,protein:10,carbs:62,fat:7,recipe:{ingredients:["1 ripe banana","2 eggs","1/2 cup flour","1/2 tsp baking powder","Splash milk","Butter or oil for pan","Pinch of salt"],steps:["Mash banana and mix with eggs and milk.","Stir in flour, baking powder, pinch of salt.","Cook pancakes on greased skillet until golden."]}},
+      {name:"Avocado Toast",type:"breakfast",basePrice:1.60,calories:270,protein:7,carbs:30,fat:14,recipe:{ingredients:["2 slices whole wheat bread","1/2 avocado","Salt & pepper","Lemon juice","Chili flakes (optional)"],steps:["Toast bread.","Mash avocado with lemon, salt, pepper, and chili flakes if desired.","Spread avocado mixture on toast."]}},
+
+      // --- More Breakfasts ---
+      {name:"Shakshuka",type:"breakfast",basePrice:2.30,calories:330,protein:14,carbs:38,fat:13,recipe:{ingredients:["2 eggs","1 cup tomato sauce","1/4 onion","1/4 bell pepper","1 tsp olive oil","Cumin","Paprika","Salt & pepper"],steps:["Sauté onion and pepper in oil.","Add tomato sauce and spices, simmer.","Crack eggs into sauce, cover, and cook until set."]}},
+      {name:"Cottage Cheese & Pineapple",type:"breakfast",basePrice:2.10,calories:260,protein:16,carbs:32,fat:6,recipe:{ingredients:["1 cup low-fat cottage cheese","1/2 cup pineapple chunks"],steps:["Spoon cottage cheese into bowl.","Top with pineapple."]}},
+      {name:"Spinach & Feta Omelette",type:"breakfast",basePrice:2.20,calories:280,protein:16,carbs:7,fat:18,recipe:{ingredients:["2 eggs","1/2 cup spinach","2 tbsp feta cheese","1 tsp olive oil","Salt & pepper"],steps:["Sauté spinach in oil.","Whisk eggs, pour into pan, add feta and spinach, cook until set."]}},
+      {name:"Peanut Butter & Banana Toast",type:"breakfast",basePrice:1.50,calories:300,protein:8,carbs:40,fat:12,recipe:{ingredients:["2 slices whole wheat bread","2 tbsp peanut butter","1 banana"],steps:["Toast bread.","Spread peanut butter, top with banana slices."]}},
+      {name:"Berry Smoothie Bowl",type:"breakfast",basePrice:2.40,calories:280,protein:10,carbs:52,fat:6,recipe:{ingredients:["1 cup frozen mixed berries","1/2 cup Greek yogurt","1/2 cup milk","1 tbsp chia seeds"],steps:["Blend berries, yogurt, and milk until thick.","Pour into bowl, top with chia seeds."]}},
+
+      // --- More Lunches ---
+      {name:"Quinoa Chickpea Salad",type:"lunch",basePrice:2.60,calories:390,protein:13,carbs:64,fat:9,recipe:{ingredients:["1 cup cooked quinoa","1/2 cup canned chickpeas","Cherry tomatoes","Cucumber","Lemon juice","Olive oil","Parsley","Salt & pepper"],steps:["Mix all ingredients in bowl.","Drizzle with lemon juice and olive oil."]}},
+      {name:"Tuna Salad Wrap",type:"lunch",basePrice:2.80,calories:340,protein:20,carbs:32,fat:14,recipe:{ingredients:["1 can tuna","1 tbsp mayo","1 whole wheat tortilla","Lettuce","Tomato","Salt & pepper"],steps:["Mix tuna with mayo, salt, and pepper.","Spread on tortilla, add veggies, and roll up."]}},
+      {name:"Egg Fried Rice",type:"lunch",basePrice:2.20,calories:420,protein:13,carbs:70,fat:11,recipe:{ingredients:["1 cup cooked rice","1 egg","1/2 cup mixed veggies","Soy sauce","1 tsp oil"],steps:["Sauté veggies in oil.","Push aside, scramble egg, then mix with rice and soy sauce."]}},
+      {name:"Caprese Sandwich",type:"lunch",basePrice:2.75,calories:350,protein:12,carbs:44,fat:13,recipe:{ingredients:["2 slices whole wheat bread","2 slices fresh mozzarella","Tomato slices","Basil","1 tsp olive oil","Salt & pepper"],steps:["Layer mozzarella, tomato, and basil on bread.","Drizzle with oil, season, and assemble sandwich."]}},
+      {name:"Falafel & Hummus Bowl",type:"lunch",basePrice:2.90,calories:400,protein:15,carbs:60,fat:12,recipe:{ingredients:["3 falafel balls","1/2 cup hummus","1 pita bread","Lettuce","Cucumber","Tomato"],steps:["Arrange falafel, hummus, and veggies in bowl.","Serve with pita."]}},
+
+      // --- More Dinners ---
+      {name:"Salmon & Roasted Veggies",type:"dinner",basePrice:4.20,calories:510,protein:28,carbs:24,fat:32,recipe:{ingredients:["1 salmon fillet","1 cup broccoli","1/2 cup potatoes","1 tsp olive oil","Lemon juice","Salt & pepper"],steps:["Toss veggies in oil, salt, pepper.","Roast veggies and salmon at 400°F for 18min.","Drizzle lemon juice before serving."]}},
+      {name:"Beef & Broccoli Stir Fry",type:"dinner",basePrice:3.90,calories:490,protein:27,carbs:50,fat:18,recipe:{ingredients:["3 oz beef strips","1 cup broccoli","1/2 cup rice","Soy sauce","Ginger","1 tsp oil"],steps:["Sauté beef in oil, add broccoli, soy sauce, and ginger.","Serve over rice."]}},
+      {name:"Eggplant Parmesan",type:"dinner",basePrice:3.10,calories:430,protein:18,carbs:50,fat:16,recipe:{ingredients:["1/2 eggplant","1 cup marinara sauce","1/4 cup shredded mozzarella","1 tbsp parmesan","Basil","Salt & pepper"],steps:["Bake eggplant slices, layer with sauce and cheese, bake until bubbly."]}},
+      {name:"Chickpea Curry & Rice",type:"dinner",basePrice:2.80,calories:420,protein:13,carbs:72,fat:10,recipe:{ingredients:["1 cup cooked rice","3/4 cup canned chickpeas","1/2 cup curry sauce","Peas","Cilantro","Salt"],steps:["Simmer chickpeas with curry sauce and peas.","Serve over rice, garnish with cilantro."]}},
+      {name:"Pork Tenderloin & Green Beans",type:"dinner",basePrice:3.80,calories:500,protein:32,carbs:28,fat:18,recipe:{ingredients:["3 oz pork tenderloin","1 cup green beans","1/2 cup mashed potatoes","Salt & pepper"],steps:["Roast pork and green beans.","Serve with mashed potatoes."]}},
+      {name:"Stuffed Bell Peppers",type:"dinner",basePrice:3.20,calories:420,protein:17,carbs:62,fat:11,recipe:{ingredients:["1 bell pepper","1/2 cup cooked rice","1/4 cup ground turkey","Tomato sauce","Onion","Garlic","Salt & pepper"],steps:["Mix turkey, rice, onion, garlic, and sauce.","Stuff pepper, bake until tender."]}},
+      {name:"Vegetable Lasagna",type:"dinner",basePrice:3.50,calories:480,protein:16,carbs:64,fat:18,recipe:{ingredients:["1/2 cup cooked lasagna noodles","1/2 cup ricotta cheese","1 cup spinach","1/2 cup marinara","Mozzarella","Salt & pepper"],steps:["Layer noodles, cheese, veggies, and sauce.","Bake until golden and bubbly."]}},
+      {name:"Chicken Fajitas",type:"dinner",basePrice:3.60,calories:505,protein:29,carbs:56,fat:19,recipe:{ingredients:["1 small chicken breast","1/2 bell pepper","1/4 onion","1 whole wheat tortilla","Fajita seasoning","Salsa"],steps:["Sauté chicken, pepper, and onion with seasoning.","Serve in tortilla with salsa."]}},
+      {name:"Lemon Garlic Shrimp Pasta",type:"dinner",basePrice:4.10,calories:430,protein:27,carbs:61,fat:10,recipe:{ingredients:["2 oz pasta","3 oz shrimp","2 cloves garlic","Lemon juice","Olive oil","Parsley"],steps:["Cook pasta, sauté shrimp with garlic and oil, toss everything with lemon and parsley."]}},
+
+      // --- More Snacks ---
+      {name:"Rice Cakes & Almond Butter",type:"snack",basePrice:1.00,calories:120,protein:3,carbs:24,fat:4,recipe:{ingredients:["2 rice cakes","1 tbsp almond butter"],steps:["Spread almond butter on rice cakes."]}},
+      {name:"Cucumber & Cream Cheese",type:"snack",basePrice:0.90,calories:85,protein:2,carbs:5,fat:7,recipe:{ingredients:["1/2 cucumber","2 tbsp cream cheese"],steps:["Slice cucumber, spread with cream cheese."]}},
+      {name:"Roasted Chickpeas",type:"snack",basePrice:0.85,calories:110,protein:6,carbs:18,fat:2,recipe:{ingredients:["1/2 cup canned chickpeas","Olive oil","Paprika","Salt"],steps:["Toss chickpeas with oil, paprika, salt, and roast at 400°F for 20min."]}},
+      {name:"Orange Slices",type:"snack",basePrice:0.75,calories:62,protein:1,carbs:15,fat:0,recipe:{ingredients:["1 orange"],steps:["Peel and slice orange."]}},
+      {name:"Edamame",type:"snack",basePrice:1.15,calories:120,protein:11,carbs:9,fat:4,recipe:{ingredients:["1/2 cup shelled edamame"],steps:["Boil or steam edamame, sprinkle with salt."]}},
+      {name:"Popcorn",type:"snack",basePrice:0.65,calories:90,protein:2,carbs:18,fat:2,recipe:{ingredients:["2 cups popped popcorn","Salt"],steps:["Pop popcorn, sprinkle with salt."]}},
+      {name:"Greek Yogurt & Honey",type:"snack",basePrice:1.10,calories:140,protein:12,carbs:18,fat:2,recipe:{ingredients:["1/2 cup Greek yogurt","1 tsp honey"],steps:["Top yogurt with honey."]}},
+      {name:"Celery & Peanut Butter",type:"snack",basePrice:0.95,calories:110,protein:3,carbs:6,fat:8,recipe:{ingredients:["2 celery sticks","1 tbsp peanut butter"],steps:["Spread peanut butter in celery sticks."]}},
+      // ...You can keep adding more for even more variety!
     ];
     const US_CA_REGION_PRICE_MODIFIERS = {
       "CA": 1.3, "NY": 1.23, "TX": 0.95, "FL": 1.02, "WA": 1.18, "AZ": 1.00, "IL": 1.10, "NC": 0.97, "GA": 0.97, "PA": 1.10, "OH": 1.05,
@@ -845,7 +921,7 @@
       const days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
       let bestPlan = null;
       let bestCost = Infinity;
-      for(let attempt=0; attempt<25; ++attempt) {
+      for(let attempt=0; attempt<28; ++attempt) {
         let usedMeals = { breakfast: [], lunch: [], dinner: [], snack: [] };
         let leftovers = { breakfast: [], lunch: [], dinner: [], snack: [] };
         let plan = [];
@@ -902,6 +978,7 @@
         document.getElementById("store-reminder").classList.remove("hidden");
         document.getElementById("store-reminder").textContent = "Please select a grocery store to see your meal plan.";
         document.getElementById("mealplan-content").innerHTML = "";
+        document.getElementById("food-summary").classList.add("hidden");
         return;
       } else {
         document.getElementById("store-reminder").classList.add("hidden");
@@ -923,6 +1000,9 @@
       </div>`;
       if(!result) {
         html += `<div class="no-plan-message">No meal plan can be generated under your current budget and preferences.<br>Please increase your budget or relax restrictions.</div>`;
+        document.getElementById('mealplan-content').innerHTML = html;
+        document.getElementById('food-summary').classList.add("hidden");
+        return;
       } else {
         html += `<strong>Plan Total Cost:</strong> ${currency} ${result.totalCost.toFixed(2)}<br>`;
         html += `<table class="meal-table"><thead><tr><th>Day</th><th>Meal</th><th>Calories</th><th>Protein</th><th>Carbs</th><th>Fat</th><th>Price</th></tr></thead><tbody>`;
@@ -945,6 +1025,8 @@
         html += `</tbody></table>`;
       }
       document.getElementById('mealplan-content').innerHTML = html;
+      // Render food summary!
+      renderFoodSummary(result, user, currency, getPriceModifier(user.zip), budget);
     }
     function toggleRecipe(name) {
       const meal = MEALS.find(m => m.name === name);
@@ -966,6 +1048,177 @@
       el.classList.toggle('hidden');
     }
     window.toggleRecipe = toggleRecipe;
+
+    // --- Food summary logic ---
+    // Common grocery packaging and price estimates (for summary)
+    const PACKAGE_SIZES = {
+      "eggs": [6, 12], // count
+      "ground beef": [0.5, 1], // kg or lb, handle both
+      "bread": [1], // loaf
+      "banana": [6], // bunch
+      "potatoes": [2, 5], // lb/bag
+      "milk": [1, 2], // litre or quart
+      "carrot": [1], // lb bag
+      "apple": [6], // bag
+      "chicken": [1, 2], // lb or kg
+      "tofu": [0.4], // block (400g)
+      "cheese": [0.2, 0.5], // block (200g/500g)
+      "yogurt": [0.5, 1], // tub (500g/1kg)
+      "rice": [1, 2], // kg
+      "beans": [1], // can or bag
+      "hummus": [0.2], // 200g
+      "oats": [0.5, 1], // kg
+      "pasta": [0.5, 1], // kg
+      "trail mix": [0.2], // bag
+      "bread": [1], // loaf
+    };
+    const PACKAGE_PRICES = {
+      "eggs": 2.5,
+      "ground beef": 5.0, // 1lb
+      "bread": 2.5,
+      "banana": 1.1,
+      "potatoes": 3.5,
+      "milk": 2.7,
+      "carrot": 1.5,
+      "apple": 2.7,
+      "chicken": 7.0,
+      "tofu": 2.2,
+      "cheese": 4.0,
+      "yogurt": 3.5,
+      "rice": 2.0,
+      "beans": 1.0,
+      "hummus": 2.5,
+      "oats": 2.2,
+      "pasta": 1.6,
+      "trail mix": 2.5,
+    };
+
+    // Ingredient normalization for summary
+    function normalizeIngredient(ing) {
+      let name = ing.toLowerCase();
+      if(name.includes("egg")) return "eggs";
+      if(name.includes("ground beef")) return "ground beef";
+      if(name.includes("loaf") || name.includes("bread")) return "bread";
+      if(name.includes("banana")) return "banana";
+      if(name.includes("potato")) return "potatoes";
+      if(name.includes("milk")) return "milk";
+      if(name.includes("carrot")) return "carrot";
+      if(name.includes("apple")) return "apple";
+      if(name.includes("chicken")) return "chicken";
+      if(name.includes("tofu")) return "tofu";
+      if(name.includes("cheese")) return "cheese";
+      if(name.includes("yogurt")) return "yogurt";
+      if(name.includes("rice")) return "rice";
+      if(name.includes("beans")) return "beans";
+      if(name.includes("hummus")) return "hummus";
+      if(name.includes("oats")) return "oats";
+      if(name.includes("pasta") || name.includes("spaghetti")) return "pasta";
+      if(name.includes("trail mix")) return "trail mix";
+      if(name.includes("parmesan")) return "cheese";
+      return name.split(",")[0].replace(/[^a-z ]/g,"").trim();
+    }
+    function getAmountFromIngredientString(ing) {
+      // Returns {amount: float, unit: string}
+      // Examples: "2 eggs", "1 cup rice", "3 slices bread", "1/2 block tofu"
+      let m = ing.match(/^([\d/.\s]+)\s*([a-zA-Z]+)?/);
+      if(!m) return {amount: 1, unit: ""};
+      let amt = m[1].trim();
+      if(amt.includes("/")) {
+        let parts = amt.split(" ");
+        let val = 0;
+        for(let p of parts) {
+          if(p.includes("/")) {
+            let [a,b]=p.split("/"); val += parseFloat(a)/parseFloat(b);
+          } else { val += parseFloat(p); }
+        }
+        amt = val;
+      }
+      else amt = parseFloat(amt);
+      return {amount: isNaN(amt)?1:amt, unit: m[2]||""};
+    }
+    function getUnitForIngredient(ing) {
+      let name = ing.toLowerCase();
+      if(name.includes("egg")) return "ct";
+      if(name.includes("loaf") || name.includes("bread")) return "loaf";
+      if(name.includes("banana")) return "ct";
+      if(name.includes("potato")) return "ct";
+      if(name.includes("milk")) return "L";
+      if(name.includes("carrot")) return "ct";
+      if(name.includes("apple")) return "ct";
+      if(name.includes("chicken")) return "lb";
+      if(name.includes("tofu")) return "block";
+      if(name.includes("cheese")) return "g";
+      if(name.includes("yogurt")) return "g";
+      if(name.includes("rice")) return "g";
+      if(name.includes("beans")) return "g";
+      if(name.includes("hummus")) return "g";
+      if(name.includes("oats")) return "g";
+      if(name.includes("pasta") || name.includes("spaghetti")) return "g";
+      if(name.includes("trail mix")) return "g";
+      return "";
+    }
+    function renderFoodSummary(planResult, user, currency, priceMod, budget) {
+      // 1. Aggregate all ingredients
+      let allIngredients = {};
+      planResult.plan.forEach(day=>{
+        day.meals.forEach(meal=>{
+          meal.recipe.ingredients.forEach(rawIng=>{
+            let key = normalizeIngredient(rawIng);
+            let amtObj = getAmountFromIngredientString(rawIng);
+            if(!allIngredients[key]) allIngredients[key] = {raw:[], total:0, unit:amtObj.unit};
+            allIngredients[key].raw.push(rawIng);
+            allIngredients[key].total += amtObj.amount;
+          });
+        });
+      });
+      // 2. Apply package rounding for main goods
+      let summaryRows = [];
+      let totalPkgCost = 0;
+      Object.keys(allIngredients).forEach(ing=>{
+        let total = allIngredients[ing].total;
+        let pkg = PACKAGE_SIZES[ing];
+        let price = PACKAGE_PRICES[ing] ? PACKAGE_PRICES[ing]*priceMod : 0;
+        let pkgLabel = "";
+        let pkgQty = total;
+        let pkgCost = 0;
+        if(pkg && price) {
+          // Find smallest pkg size >= needed, else largest available
+          let picked = pkg.find(sz=>sz>=total) || pkg[pkg.length-1];
+          pkgQty = picked;
+          pkgLabel = picked + (ing==="eggs"||ing==="banana"||ing==="apple"||ing==="carrot"?" ct":ing==="bread"?" loaf":ing==="milk"?" L":" unit");
+          pkgCost = Math.round(price*100)/100;
+          totalPkgCost += pkgCost;
+        } else {
+          pkgLabel = "~" + Math.round(total*100)/100;
+        }
+        summaryRows.push({
+          name: ing.charAt(0).toUpperCase()+ing.slice(1),
+          total: Math.round(total*100)/100,
+          pkg: pkgLabel,
+          cost: pkgCost ? `${currency} ${pkgCost.toFixed(2)}` : ""
+        });
+      });
+      // 3. Budget check
+      let warn = "";
+      if(totalPkgCost > budget) {
+        warn = `Warning: Estimated staple/package cost (${currency} ${totalPkgCost.toFixed(2)}) exceeds your budget (${currency} ${budget.toFixed(2)}). Consider removing a meal, using smaller packages, or shopping for sales.`;
+      }
+      // 4. Render
+      let html = `<h3>Weekly Food Shopping Summary</h3>
+      <table class="food-summary-table">
+        <thead><tr><th>Ingredient</th><th>Estimated Needed</th><th>Package/Amount to Buy</th><th>Est. Price</th></tr></thead>
+        <tbody>
+          ${summaryRows.map(r=>`<tr>
+            <td>${r.name}</td><td>${r.total}</td><td>${r.pkg}</td><td>${r.cost}</td>
+          </tr>`).join("")}
+        </tbody>
+      </table>
+      ${warn?`<div class="food-summary-warning">${warn}</div>`:""}
+      <div style="font-size:0.95em;color:var(--accent2);margin-top:7px;">* Prices and packaging are estimates. Adjust for local store options and check for sales!</div>
+      `;
+      document.getElementById("food-summary").innerHTML = html;
+      document.getElementById("food-summary").classList.remove("hidden");
+    }
 
     // --- On load: hook up events and auto-show login/register/main ---
     window.onload = function() {
