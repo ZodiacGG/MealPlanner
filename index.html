@@ -3,174 +3,277 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Smart Calorie & Meal Planner</title>
+  <title>Minimalist Meal Planner</title>
   <meta name="color-scheme" content="dark light">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:400,500,700&display=swap">
   <style>
     :root {
-      --primary: #667eea; --secondary: #764ba2; --white: #fff; --black: #222;
-      --gray: #f8f9fa; --light-bg: #f9f8ff; --dark-bg: #21223b; --dark-card: #292a3d;
-      --dark-text: #eaeafd; --highlight: #ffae42;
+      --main-bg: #fff;
+      --main-txt: #181818;
+      --card-bg: #f7f7f7;
+      --card-border: #e0e0e0;
+      --accent: #222;
+      --accent2: #5d5d5d;
+      --primary-btn: #181818;
+      --primary-btn-txt: #fff;
+      --input-bg: #fff;
+      --input-border: #d4d4d4;
+      --input-txt: #222;
+      --hover: #eeeeee;
+      --warn: #d32f2f;
+      --highlight: #1976d2;
+      --store-link: #0066cc;
     }
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-      min-height: 100vh; color: var(--black);
-      transition: background 0.4s, color 0.4s;
+    [data-theme="dark"] {
+      --main-bg: #16171a;
+      --main-txt: #f3f3f3;
+      --card-bg: #232326;
+      --card-border: #28292a;
+      --accent: #fafafa;
+      --accent2: #a0a0a0;
+      --primary-btn: #fff;
+      --primary-btn-txt: #181818;
+      --input-bg: #191a1c;
+      --input-border: #333436;
+      --input-txt: #fafafa;
+      --hover: #232326;
+      --warn: #ff5252;
+      --highlight: #64b5f6;
+      --store-link: #79baff;
     }
-    [data-theme="dark"] body { background: var(--dark-bg); color: var(--dark-text); }
-    .container { max-width: 900px; margin: 0 auto; padding: 24px; }
-    .app-header { text-align: center; margin-bottom: 30px; color: var(--white);}
-    .app-header h1 { font-size: 2.2rem; margin-bottom: 10px; text-shadow: 2px 2px 7px rgba(0,0,0,0.13);}
+    html, body {
+      background: var(--main-bg);
+      color: var(--main-txt);
+      font-family: 'Inter', system-ui, sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      font-size: 16px;
+      letter-spacing: 0.01em;
+      transition: background 0.32s, color 0.32s;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px 8px 60px 8px;
+    }
+    .header {
+      font-weight: 700;
+      font-size: 2.1em;
+      text-align: left;
+      margin: 18px 0 8px 0;
+      letter-spacing: -0.03em;
+    }
+    .desc {
+      font-size: 1em;
+      color: var(--accent2);
+      margin-bottom: 26px;
+      margin-top: 0;
+    }
     .card {
-      background: rgba(255,255,255,0.97); border-radius: 18px; padding: 28px 22px;
-      margin-bottom: 22px; box-shadow: 0 8px 32px rgba(0,0,0,0.09);
-      border: 1px solid rgba(255,255,255,0.17); position: relative; transition: background 0.4s, color 0.4s;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 22px 18px 12px 18px;
+      margin-bottom: 24px;
+      box-shadow: 0 1.5px 6px 0 rgba(30,30,30,0.04);
+      transition: background 0.3s, color 0.3s;
     }
-    [data-theme="dark"] .card { background: var(--dark-card); color: var(--dark-text); border: 1px solid #38396c;}
-    .form-group { margin-bottom: 16px; }
-    label { display: block; margin-bottom: 7px; font-weight: 500; color: #4b4b4b;}
-    [data-theme="dark"] label { color: var(--dark-text);}
+    .center { text-align: center; }
+    .form-group { margin-bottom: 13px;}
+    label {
+      font-weight: 500;
+      margin-bottom: 3px;
+      color: var(--main-txt);
+      display:block;
+      font-size: 1em;
+    }
     input, select, textarea {
-      width: 100%; padding: 11px 14px; border: 2px solid #e1e5e9; border-radius: 8px; font-size: 15px;
-      background: var(--white); color: var(--black); transition: border-color 0.3s, background 0.4s, color 0.4s;
+      width: 100%;
+      padding: 9px 12px;
+      font-size: 1em;
+      background: var(--input-bg);
+      border: 1.5px solid var(--input-border);
+      border-radius: 7px;
+      color: var(--input-txt);
+      margin-top:2px;
+      margin-bottom: 2px;
+      box-sizing: border-box;
+      transition: border-color 0.2s, background 0.25s, color 0.25s;
     }
     input:focus, select:focus, textarea:focus {
-      outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px rgba(102,126,234,0.10);
+      outline: none;
+      border-color: var(--highlight);
     }
-    [data-theme="dark"] input, [data-theme="dark"] select, [data-theme="dark"] textarea {
-      background: #26273e; color: var(--dark-text); border: 2px solid #333455;
+    textarea { min-height: 40px; }
+    .btn {
+      padding: 10px 18px;
+      font-size: 1em;
+      background: var(--primary-btn);
+      color: var(--primary-btn-txt);
+      border: none;
+      border-radius: 7px;
+      font-weight: 500;
+      cursor: pointer;
+      margin-top: 14px;
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+      box-shadow: 0 1px 4px 0 rgba(30,30,30,0.04);
     }
-    .btn { padding: 11px 20px; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s; text-decoration: none; display: inline-block; text-align: center; }
-    .btn-primary { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: var(--white);}
-    .btn-primary:hover { filter: brightness(1.05); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(102, 126, 234, 0.21);}
-    .btn-secondary { background: var(--gray); color: #444; border: 2px solid #e1e5e9;}
-    .btn-secondary:hover { background: #e9ecef;}
-    [data-theme="dark"] .btn-secondary { background: #242545; color: var(--dark-text); border: 2px solid #343656;}
-    [data-theme="dark"] .btn-secondary:hover { background: #32345d;}
-    .hidden { display: none !important;}
-    .menu-bar { display: flex; gap: 12px; justify-content: flex-end; margin-bottom: 18px;}
-    .menu-bar button { font-size: 15px; padding: 7px 16px; border-radius: 18px; background: var(--gray); color: #444; border: 1px solid #e1e5e9; cursor: pointer; transition: background 0.3s;}
-    [data-theme="dark"] .menu-bar button { background: #232340; color: var(--dark-text); border: 1px solid #393b6c;}
-    .menu-bar .active { background: var(--primary); color: var(--white); border: 1px solid var(--primary);}
-    .theme-toggle { background: none; border: none; font-size: 1.4rem; margin-left: 4px; cursor: pointer;}
-    .security-note {
-      background: #fff7e6; color: #b36b00; border-left: 5px solid var(--highlight);
-      padding: 12px 18px; border-radius: 8px; margin-bottom: 18px; font-size: 1rem;
+    .btn:hover { background: var(--highlight); color: #fff;}
+    .btn-secondary {
+      background: var(--card-bg);
+      color: var(--accent2);
+      border: 1.2px solid var(--card-border);
+      margin-top: 10px;
     }
-    [data-theme="dark"] .security-note { background: #322e1a; color: #ffd180; border-color: #ffd180;}
-    .profile-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px;}
-    @media (max-width: 700px) { .profile-row { grid-template-columns: 1fr; gap: 10px;} .container { padding: 7px; } .card { padding: 14px 7px; }}
-    .meal-table { width: 100%; border-collapse: collapse; margin-bottom: 16px;}
-    .meal-table th, .meal-table td { border: 1px solid #ddd; padding: 7px 8px; text-align: left;}
-    .meal-table th { background: var(--primary); color: var(--white); font-weight: 600;}
-    [data-theme="dark"] .meal-table th { background: #363875; color: #ffe;}
-    [data-theme="dark"] .meal-table td { background: #22223e; color: #eaeafd;}
-    .meal-desc { font-size: 0.97em; color: #666;}
-    [data-theme="dark"] .meal-desc { color: #aaa;}
+    .btn-secondary:hover { background: var(--hover);}
+    .hidden { display: none !important; }
+    .row2 { display: flex; gap: 10px;}
+    .row2 > div { flex: 1; }
+    .switch-row { display: flex; justify-content: flex-end; align-items: center; gap: 13px;}
+    .theme-toggle-btn {
+      background: none;
+      border: none;
+      font-size: 1.5em;
+      color: var(--accent2);
+      cursor: pointer;
+      margin-right: 2px;
+      transition: color 0.2s;
+    }
+    .theme-toggle-btn.active { color: var(--highlight);}
     .logout-btn {
-      position: absolute; top: 15px; right: 18px;
-      background: rgba(255,255,255,0.16); color: var(--secondary);
-      border: none; padding: 7px 17px; border-radius: 18px; cursor: pointer; font-size: 1em;
+      color: var(--warn);
+      background: none;
+      border: none;
+      font-size: 1em;
+      cursor: pointer;
+      margin-left: 7px;
+      margin-top: 8px;
+      float:right;
     }
-    [data-theme="dark"] .logout-btn { background: #232340; color: #ffb84d;}
-    .meal-link { color: var(--primary); cursor:pointer; text-decoration: underline;}
-    .meal-link:hover { color: var(--secondary);}
-    .meal-recipe-content { background: #f7f7fa; padding:10px 12px; border-radius:7px; margin:7px 0; color:#222;}
-    [data-theme="dark"] .meal-recipe-content { background: #232340; color: #ffe;}
-    .toggle-switch { display: inline-block; width: 46px; height: 26px; position: relative; margin-left: 10px; vertical-align: middle;}
-    .toggle-switch input { display: none;}
-    .slider {
-      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-      background: #ccc; border-radius: 26px; transition: background 0.3s;
+    /* Minimal table */
+    .meal-table { width: 100%; border-collapse: collapse; margin-bottom: 13px;}
+    .meal-table th, .meal-table td { border-bottom: 1px solid var(--card-border); padding: 5.5px 6px; text-align: left;}
+    .meal-table th { color: var(--accent2); font-weight: 500; font-size: 0.97em; background: none;}
+    .meal-table td { color: var(--main-txt); font-size: 0.98em;}
+    .meal-link { color: var(--store-link); cursor:pointer; text-decoration: underline;}
+    .meal-recipe-content { background: var(--hover); padding:10px 12px; border-radius:6px; margin:7px 0 6px 0; color:var(--main-txt);}
+    [data-theme="dark"] .meal-recipe-content { background: #181a1d; color: #fff;}
+    .warn-msg { color: var(--warn); font-weight: 500; margin-top: 12px; }
+    .map-store-list { margin: 0 0 14px 0; padding: 0; list-style: none;}
+    .map-store-list li { margin-bottom: 7px; }
+    .store-link { color: var(--store-link); text-decoration: underline;}
+    .no-plan-message { color: var(--warn); font-size: 1.07em; font-weight: 600; margin: 14px 0;}
+    /* Modern modal */
+    .modal-bg {
+      position:fixed; top:0; left:0; width:100vw; height:100vh;
+      background:rgba(0,0,0,0.16); display:flex; align-items:center; justify-content:center; z-index:99;
     }
-    .slider:before {
-      content: ""; position: absolute; height: 20px; width: 20px; left: 3px; bottom: 3px;
-      background: #fff; border-radius: 50%; transition: 0.3s; box-shadow: 0 1px 2px rgba(0,0,0,0.09);
+    .modal-card {
+      background: var(--main-bg); color: var(--main-txt);
+      border-radius: 12px; box-shadow: 0 4px 18px 0 #0002;
+      padding: 24px 18px 18px 18px; min-width: 280px; max-width: 95vw;
+      border:1.3px solid var(--card-border);
+      position: relative;
     }
-    input:checked + .slider { background: var(--primary);}
-    input:checked + .slider:before { transform: translateX(20px); background: #ffe;}
-    .no-plan-message { color: #b20000; font-size: 1.13em; font-weight: bold; margin: 16px 0;}
+    .modal-card h2 { font-size: 1.2em; font-weight: 600; margin: 0 0 10px 0;}
+    .close-modal-btn {
+      position:absolute; top:13px; right:12px; background:none; border:none; font-size:1.1em; color:var(--accent2); cursor:pointer;
+    }
+    /* Responsive */
+    @media (max-width:600px) {
+      .header { font-size: 1.22em;}
+      .card { padding: 13px 4px 9px 5px;}
+    }
   </style>
 </head>
 <body>
-  <div id="app" class="container">
-    <div class="app-header">
-      <h1>🍽️ Smart Calorie & Meal Planner</h1>
-      <p>Your personalized nutrition and meal planning assistant</p>
+  <div class="container">
+    <div class="header">Minimalist Meal Planner</div>
+    <div class="desc">Create a weekly meal plan tailored to your needs and nearby grocery options.</div>
+
+    <!-- Theme and logout controls -->
+    <div class="switch-row" id="main-controls" style="display:none;">
+      <button class="theme-toggle-btn" id="theme-btn" title="Toggle dark/light mode">🌚</button>
+      <button class="logout-btn" id="logoutBtn" onclick="logout()">Log out</button>
     </div>
-    <button class="logout-btn hidden" id="logoutBtn" onclick="logout()">Logout</button>
-    <!-- LOGIN / REGISTER -->
-    <div id="auth-screen" class="card">
-      <h2>Welcome! Sign Up or Log In</h2>
-      <div class="security-note">
-        <strong>Security Notice:</strong><br>
-        This sign-in is for convenience only. <u>Do NOT use any real or sensitive passwords or PINs.</u><br>
-        Your PIN and info are stored in your browser, not encrypted. This design is intentional to avoid risks in case of a data breach.
-      </div>
+
+    <!-- Login/Register -->
+    <div id="auth-card" class="card">
+      <div class="center" style="font-size:1.16em;margin-bottom:8px;font-weight:500;">Sign in</div>
       <div class="form-group">
         <label>Email</label>
-        <input type="email" id="email" placeholder="e.g., john@example.com" autocomplete="username">
+        <input type="email" id="login-email" autocomplete="username">
       </div>
       <div class="form-group">
         <label>4-Digit PIN</label>
-        <input type="password" id="pin" placeholder="e.g., 1234" maxlength="4" pattern="\d{4}" inputmode="numeric" autocomplete="current-password">
+        <input type="password" id="login-pin" maxlength="4" pattern="\d{4}" inputmode="numeric" autocomplete="current-password">
       </div>
-      <button class="btn btn-primary" onclick="login()" style="width: 100%; margin-bottom: 10px;">Login</button>
-      <button class="btn btn-secondary" onclick="showRegister()" style="width: 100%;">Create New Account</button>
+      <button class="btn" onclick="login()">Login</button>
+      <button class="btn btn-secondary" onclick="showRegister()">Create Account</button>
     </div>
-    <!-- REGISTER SCREEN -->
-    <div id="register-screen" class="card hidden">
-      <h2>Create Your Account</h2>
-      <div class="security-note">
-        <strong>Security Notice:</strong><br>
-        This sign-in is for convenience only. <u>Do NOT use any real or sensitive passwords or PINs.</u><br>
-        Your PIN and info are stored in your browser, not encrypted. This design is intentional to avoid risks in case of a data breach.
-      </div>
+
+    <div id="register-card" class="card hidden">
+      <div class="center" style="font-size:1.16em;margin-bottom:8px;font-weight:500;">Create an Account</div>
       <div class="form-group">
         <label>Email</label>
-        <input type="email" id="reg-email" placeholder="e.g., john@example.com" autocomplete="username">
+        <input type="email" id="reg-email" autocomplete="username">
       </div>
       <div class="form-group">
         <label>4-Digit PIN</label>
-        <input type="password" id="reg-pin" placeholder="e.g., 1234" maxlength="4" pattern="\d{4}" inputmode="numeric" autocomplete="new-password">
+        <input type="password" id="reg-pin" maxlength="4" pattern="\d{4}" inputmode="numeric" autocomplete="new-password">
       </div>
       <div class="form-group">
         <label>Birthdate</label>
-        <input type="date" id="reg-birthdate" max="">
+        <input type="date" id="reg-birthdate">
       </div>
       <div class="form-group">
-        <label>ZIP/Postal Code (US/CA)</label>
-        <input type="text" id="reg-zip" maxlength="8" placeholder="e.g., 90210 or M5A 1A1">
+        <label>ZIP/Postal Code</label>
+        <input type="text" id="reg-zip" maxlength="10" placeholder="e.g., 90210 or M5A 1A1">
       </div>
-      <div class="profile-row">
+      <div class="form-group">
+        <label>Units</label>
+        <select id="reg-units" onchange="toggleUnits('reg')">
+          <option value="metric">Metric (cm/kg)</option>
+          <option value="imperial">Imperial (ft/in/lb)</option>
+        </select>
+      </div>
+      <div class="row2">
         <div>
           <div class="form-group">
-            <label>Weight (kg)</label>
+            <label id="reg-weight-label">Weight (kg)</label>
             <input type="number" id="reg-weight" min="30" max="300" placeholder="e.g., 70">
-          </div>
-          <div class="form-group">
-            <label>Height (cm)</label>
-            <input type="number" id="reg-height" min="100" max="250" placeholder="e.g., 175">
+            <input type="number" id="reg-weight-lbs" class="hidden" min="66" max="660" placeholder="e.g., 154">
           </div>
         </div>
         <div>
           <div class="form-group">
-            <label>Gender</label>
-            <select id="reg-gender">
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-            </select>
+            <label id="reg-height-label">Height (cm)</label>
+            <input type="number" id="reg-height" min="100" max="250" placeholder="e.g., 175">
+            <span id="reg-height-imperial" class="hidden imperial-row">
+              <input type="number" id="reg-height-ft" min="3" max="8" placeholder="ft">
+              <input type="number" id="reg-height-in" min="0" max="11" placeholder="in">
+            </span>
           </div>
-          <div class="form-group">
-            <label>Activity Level</label>
-            <select id="reg-activity">
-              <option value="1.2">Sedentary</option>
-              <option value="1.375">Light</option>
-              <option value="1.55">Moderate</option>
-              <option value="1.725">Active</option>
-              <option value="1.9">Very Active</option>
-            </select>
-          </div>
+        </div>
+      </div>
+      <div class="row2">
+        <div class="form-group">
+          <label>Gender</label>
+          <select id="reg-gender">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Activity Level</label>
+          <select id="reg-activity">
+            <option value="1.2">Sedentary</option>
+            <option value="1.375">Light</option>
+            <option value="1.55">Moderate</option>
+            <option value="1.725">Active</option>
+            <option value="1.9">Very Active</option>
+          </select>
         </div>
       </div>
       <div class="form-group">
@@ -182,387 +285,206 @@
         </select>
       </div>
       <div class="form-group">
-        <label>Weekly Food Budget ($)</label>
+        <label>Weekly Food Budget</label>
         <input type="number" id="reg-budget" min="10" max="500" value="75">
       </div>
       <div class="form-group">
-        <label>Food Allergies/Intolerances (comma-separated)</label>
-        <textarea id="reg-allergies" placeholder="e.g., nuts, dairy, gluten" rows="2"></textarea>
+        <label>Food Allergies (comma-separated)</label>
+        <input id="reg-allergies" placeholder="e.g., nuts, dairy, gluten">
       </div>
-      <button class="btn btn-primary" style="width:100%;" onclick="register()">Create Account</button>
-      <button class="btn btn-secondary" style="width:100%;margin-top:8px;" onclick="showLogin()">Back to Login</button>
+      <button class="btn" onclick="register()">Create Account</button>
+      <button class="btn btn-secondary" onclick="showLogin()">Back to Login</button>
     </div>
-    <!-- MAIN APP -->
-    <div id="main-app" class="hidden">
-      <div class="menu-bar">
-        <button id="menu-btn-mealplan" class="active" onclick="showPanel('mealplan')">Meal Plan</button>
-        <button id="menu-btn-profile" onclick="showPanel('profile')">Profile/Settings</button>
-        <span>
-          <label for="theme-switch" style="cursor:pointer;">
-            <span id="theme-label">🌙</span>
-            <span class="toggle-switch">
-              <input type="checkbox" id="theme-switch" onchange="toggleTheme()">
-              <span class="slider"></span>
-            </span>
-          </label>
-        </span>
-      </div>
-      <div id="panel-mealplan">
-        <div class="card">
-          <h2>Your Personalized Meal Plan</h2>
-          <div id="mealplan-content"></div>
+
+    <!-- Store selection modal -->
+    <div id="store-modal" class="modal-bg hidden">
+      <div class="modal-card" id="store-modal-card">
+        <button class="close-modal-btn" onclick="closeStoreModal()" title="Cancel">&times;</button>
+        <h2>Pick your grocery store</h2>
+        <div style="font-size:0.97em;color:var(--accent2);margin-bottom:11px;">
+          Choose where you plan to shop this week. This helps us guide you to the best meal plan and resources.
         </div>
+        <div id="store-search-geo" class="center" style="margin-bottom:12px;">
+          <button class="btn btn-secondary" onclick="detectLocation()">📍 Use my location</button>
+        </div>
+        <div>
+          <input id="store-zip" placeholder="Or enter ZIP/Postal code" style="width:60%;margin-bottom:7px;">
+          <button class="btn btn-secondary" onclick="searchStoresByZip()">Search</button>
+        </div>
+        <div id="store-search-status" style="margin:9px 0 7px 0;font-size:0.95em;color:var(--accent2);"></div>
+        <ul id="store-list" class="map-store-list"></ul>
+        <div id="store-select-hint" style="font-size:0.94em;color:var(--warn);margin:6px 0 0 0;"></div>
       </div>
-      <div id="panel-profile" class="hidden">
-        <div class="card">
-          <h2>Edit Profile & Preferences</h2>
-          <form id="profile-form" onsubmit="saveProfile(); return false;">
-            <div class="profile-row">
-              <div>
-                <div class="form-group">
-                  <label>Email (cannot change)</label>
-                  <input type="email" id="profile-email" disabled>
-                </div>
-                <div class="form-group">
-                  <label>Birthdate</label>
-                  <input type="date" id="profile-birthdate" max="">
-                </div>
-                <div class="form-group">
-                  <label>ZIP/Postal Code (US/CA)</label>
-                  <input type="text" id="profile-zip" maxlength="8">
-                </div>
-                <div class="form-group">
-                  <label>Weekly Food Budget ($)</label>
-                  <input type="number" id="profile-budget" min="10" max="500">
-                </div>
-              </div>
-              <div>
-                <div class="form-group">
-                  <label>Weight (kg)</label>
-                  <input type="number" id="profile-weight" min="30" max="300">
-                </div>
-                <div class="form-group">
-                  <label>Height (cm)</label>
-                  <input type="number" id="profile-height" min="100" max="250">
-                </div>
-                <div class="form-group">
-                  <label>Gender</label>
-                  <select id="profile-gender">
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label>Activity Level</label>
-                  <select id="profile-activity">
-                    <option value="1.2">Sedentary</option>
-                    <option value="1.375">Light</option>
-                    <option value="1.55">Moderate</option>
-                    <option value="1.725">Active</option>
-                    <option value="1.9">Very Active</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label>Goal</label>
-                  <select id="profile-goal">
-                    <option value="maintain">Maintain Weight</option>
-                    <option value="lose">Lose Weight</option>
-                    <option value="gain">Gain Weight</option>
-                  </select>
-                </div>
-              </div>
+    </div>
+
+    <!-- Profile/settings/edit -->
+    <div id="profile-card" class="card hidden">
+      <div class="center" style="font-size:1.12em;margin-bottom:9px;font-weight:500;">Your Profile</div>
+      <form id="profile-form" onsubmit="saveProfile(); return false;">
+        <div class="form-group">
+          <label>Units</label>
+          <select id="profile-units" onchange="toggleUnits('profile')">
+            <option value="metric">Metric (cm/kg)</option>
+            <option value="imperial">Imperial (ft/in/lb)</option>
+          </select>
+        </div>
+        <div class="row2">
+          <div>
+            <div class="form-group">
+              <label>Email (cannot change)</label>
+              <input type="email" id="profile-email" disabled>
             </div>
             <div class="form-group">
-              <label>Food Allergies/Intolerances (comma-separated)</label>
-              <textarea id="profile-allergies" rows="2"></textarea>
+              <label>Birthdate</label>
+              <input type="date" id="profile-birthdate">
             </div>
-            <button class="btn btn-primary" type="submit" style="width:100%;">Save & Update Meal Plan</button>
-          </form>
+            <div class="form-group">
+              <label>ZIP/Postal Code</label>
+              <input type="text" id="profile-zip" maxlength="10">
+            </div>
+            <div class="form-group">
+              <label id="profile-weight-label">Weight (kg)</label>
+              <input type="number" id="profile-weight" min="30" max="300" placeholder="e.g., 70">
+              <input type="number" id="profile-weight-lbs" class="hidden" min="66" max="660" placeholder="e.g., 154">
+            </div>
+            <div class="form-group">
+              <label id="profile-height-label">Height (cm)</label>
+              <input type="number" id="profile-height" min="100" max="250" placeholder="e.g., 175">
+              <span id="profile-height-imperial" class="hidden imperial-row">
+                <input type="number" id="profile-height-ft" min="3" max="8" placeholder="ft">
+                <input type="number" id="profile-height-in" min="0" max="11" placeholder="in">
+              </span>
+            </div>
+            <div class="form-group">
+              <label>Weekly Food Budget</label>
+              <input type="number" id="profile-budget" min="10" max="500">
+            </div>
+          </div>
+          <div>
+            <div class="form-group">
+              <label>Gender</label>
+              <select id="profile-gender">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Activity Level</label>
+              <select id="profile-activity">
+                <option value="1.2">Sedentary</option>
+                <option value="1.375">Light</option>
+                <option value="1.55">Moderate</option>
+                <option value="1.725">Active</option>
+                <option value="1.9">Very Active</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Goal</label>
+              <select id="profile-goal">
+                <option value="maintain">Maintain Weight</option>
+                <option value="lose">Lose Weight</option>
+                <option value="gain">Gain Weight</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Food Allergies (comma-separated)</label>
+              <input id="profile-allergies">
+            </div>
+            <button class="btn" type="submit">Save & Update Meal Plan</button>
+          </div>
         </div>
+      </form>
+      <button class="btn btn-secondary" onclick="showMealPlan()">Back to Meal Plan</button>
+    </div>
+
+    <!-- Meal plan -->
+    <div id="mealplan-card" class="card hidden">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <div style="font-weight:500;">Your Meal Plan</div>
+        <button class="btn btn-secondary" onclick="showProfile()">Edit Profile</button>
       </div>
+      <div id="store-reminder" class="warn-msg hidden"></div>
+      <div id="mealplan-content"></div>
     </div>
   </div>
   <script>
-    // --- Simple region-based price modifiers (by US state code or Canadian province, fallback to 1.0) ---
-    const US_CA_REGION_PRICE_MODIFIERS = {
-      "CA": 1.3, "NY": 1.23, "TX": 0.95, "FL": 1.02, "WA": 1.18, "AZ": 1.00, "IL": 1.10, "NC": 0.97, "GA": 0.97, "PA": 1.10, "OH": 1.05,
-      "ON": 1.18, "QC": 1.16, "BC": 1.22, "AB": 1.02, "MB": 1.12, "NS": 1.15, "SK": 1.08, "NB": 1.14, "NL": 1.15, "PE": 1.13
-    };
-    // --- Enriched meals database with macros and recipes ---
-    const MEALS = [
-      {
-        name: "Scrambled Eggs & Toast", type: "breakfast",
-        basePrice: 1.75, calories: 320, protein: 14, carbs: 28, fat: 13,
-        recipe: {
-          ingredients: [ "2 eggs", "2 slices whole wheat bread", "1 tsp butter", "Salt & pepper" ],
-          steps: [
-            "Whisk eggs with salt and pepper.",
-            "Heat butter in pan and scramble eggs.",
-            "Toast bread.",
-            "Serve eggs with toast."
-          ]
-        }
-      },
-      {
-        name: "Oatmeal with Fruit", type: "breakfast",
-        basePrice: 1.15, calories: 290, protein: 8, carbs: 54, fat: 4,
-        recipe: {
-          ingredients: [ "1/2 cup rolled oats", "1 cup water or milk", "1/2 banana", "1/4 cup berries" ],
-          steps: [
-            "Combine oats and liquid, cook until soft.",
-            "Top with sliced banana and berries."
-          ]
-        }
-      },
-      {
-        name: "Greek Yogurt & Berries", type: "breakfast",
-        basePrice: 2.25, calories: 210, protein: 15, carbs: 25, fat: 3,
-        recipe: {
-          ingredients: [ "1 cup nonfat Greek yogurt", "1/2 cup mixed berries", "1 tsp honey (optional)" ],
-          steps: [
-            "Spoon yogurt into bowl.",
-            "Top with berries and drizzle honey."
-          ]
-        }
-      },
-      {
-        name: "Banana Pancakes", type: "breakfast",
-        basePrice: 2.00, calories: 350, protein: 10, carbs: 62, fat: 7,
-        recipe: {
-          ingredients: [ "1 ripe banana", "2 eggs", "1/2 cup flour", "1/2 tsp baking powder", "Splash milk", "Butter or oil for pan" ],
-          steps: [
-            "Mash banana and mix with eggs and milk.",
-            "Stir in flour and baking powder.",
-            "Cook pancakes on greased skillet until golden."
-          ]
-        }
-      },
-      {
-        name: "Avocado Toast", type: "breakfast",
-        basePrice: 1.60, calories: 270, protein: 7, carbs: 30, fat: 14,
-        recipe: {
-          ingredients: [ "2 slices whole wheat bread", "1/2 avocado", "Salt & pepper", "Lemon juice" ],
-          steps: [
-            "Toast bread.",
-            "Mash avocado with lemon, salt, pepper.",
-            "Spread avocado mixture on toast."
-          ]
-        }
-      },
-      {
-        name: "Rice & Beans Bowl", type: "lunch",
-        basePrice: 2.50, calories: 410, protein: 13, carbs: 80, fat: 4,
-        recipe: {
-          ingredients: [ "1 cup cooked rice", "1/2 cup cooked beans", "Salsa", "Chopped cilantro" ],
-          steps: [
-            "Warm rice and beans.",
-            "Top with salsa and cilantro."
-          ]
-        }
-      },
-      {
-        name: "Turkey Sandwich", type: "lunch",
-        basePrice: 2.10, calories: 340, protein: 18, carbs: 38, fat: 9,
-        recipe: {
-          ingredients: [ "2 slices whole wheat bread", "3 slices deli turkey", "Lettuce", "Tomato", "1 tsp mayo" ],
-          steps: [
-            "Layer turkey, lettuce, tomato on bread.",
-            "Spread mayo, assemble sandwich."
-          ]
-        }
-      },
-      {
-        name: "Chicken Salad", type: "lunch",
-        basePrice: 3.00, calories: 370, protein: 26, carbs: 11, fat: 22,
-        recipe: {
-          ingredients: [ "1 cup cooked, chopped chicken", "2 tbsp mayo", "Chopped celery", "Chopped onion", "Lettuce leaves" ],
-          steps: [
-            "Mix chicken, mayo, celery, onion.",
-            "Serve on lettuce leaves."
-          ]
-        }
-      },
-      {
-        name: "Veggie Wrap", type: "lunch",
-        basePrice: 2.30, calories: 320, protein: 8, carbs: 46, fat: 9,
-        recipe: {
-          ingredients: [ "1 whole wheat tortilla", "1/2 cup hummus", "Shredded carrots", "Spinach", "Cucumber slices" ],
-          steps: [
-            "Spread hummus on tortilla.",
-            "Layer veggies, roll up."
-          ]
-        }
-      },
-      {
-        name: "Lentil Soup & Bread", type: "lunch",
-        basePrice: 2.40, calories: 330, protein: 15, carbs: 52, fat: 4,
-        recipe: {
-          ingredients: [ "1 cup lentil soup", "1 slice whole wheat bread" ],
-          steps: [
-            "Heat soup, serve with bread."
-          ]
-        }
-      },
-      {
-        name: "Spaghetti Marinara", type: "dinner",
-        basePrice: 2.75, calories: 450, protein: 13, carbs: 78, fat: 7,
-        recipe: {
-          ingredients: [ "2 oz dry spaghetti", "1 cup marinara", "Parmesan (optional)", "Basil" ],
-          steps: [
-            "Cook spaghetti, heat marinara.",
-            "Combine, top with parmesan and basil."
-          ]
-        }
-      },
-      {
-        name: "Baked Chicken Thighs & Potatoes", type: "dinner",
-        basePrice: 3.80, calories: 520, protein: 28, carbs: 32, fat: 27,
-        recipe: {
-          ingredients: [ "1 chicken thigh", "1 cup potatoes", "Olive oil", "Herbs, salt & pepper" ],
-          steps: [
-            "Toss potatoes in oil, herbs.",
-            "Roast chicken and potatoes at 400°F for 35min."
-          ]
-        }
-      },
-      {
-        name: "Stir Fry Veggies & Rice", type: "dinner",
-        basePrice: 2.70, calories: 400, protein: 8, carbs: 74, fat: 7,
-        recipe: {
-          ingredients: [ "1 cup rice", "2 cups mixed veggies", "Soy sauce", "1 tbsp oil" ],
-          steps: [
-            "Stir fry veggies in oil.",
-            "Add cooked rice and soy sauce, stir until hot."
-          ]
-        }
-      },
-      {
-        name: "Turkey Meatballs & Pasta", type: "dinner",
-        basePrice: 3.50, calories: 480, protein: 25, carbs: 57, fat: 16,
-        recipe: {
-          ingredients: [ "3 turkey meatballs", "1 cup pasta", "1/2 cup marinara", "Parmesan" ],
-          steps: [
-            "Cook pasta, heat meatballs in marinara.",
-            "Serve together with cheese."
-          ]
-        }
-      },
-      {
-        name: "Tofu Curry & Rice", type: "dinner",
-        basePrice: 2.90, calories: 390, protein: 14, carbs: 52, fat: 12,
-        recipe: {
-          ingredients: [ "1/2 block firm tofu", "1 cup cooked rice", "1/2 cup curry sauce", "Peas" ],
-          steps: [
-            "Cube tofu, cook in curry sauce with peas.",
-            "Serve over rice."
-          ]
-        }
-      },
-      {
-        name: "Apple & Peanut Butter", type: "snack",
-        basePrice: 0.90, calories: 160, protein: 4, carbs: 29, fat: 6,
-        recipe: {
-          ingredients: [ "1 apple", "1 tbsp peanut butter" ],
-          steps: [
-            "Slice apple, dip in peanut butter."
-          ]
-        }
-      },
-      {
-        name: "Banana", type: "snack",
-        basePrice: 0.55, calories: 95, protein: 1, carbs: 24, fat: 0,
-        recipe: {
-          ingredients: [ "1 banana" ],
-          steps: [
-            "Peel and eat."
-          ]
-        }
-      },
-      {
-        name: "Carrots & Hummus", type: "snack",
-        basePrice: 1.20, calories: 130, protein: 3, carbs: 21, fat: 5,
-        recipe: {
-          ingredients: [ "1 cup carrot sticks", "2 tbsp hummus" ],
-          steps: [
-            "Dip carrots in hummus."
-          ]
-        }
-      },
-      {
-        name: "String Cheese", type: "snack",
-        basePrice: 0.80, calories: 80, protein: 7, carbs: 1, fat: 6,
-        recipe: {
-          ingredients: [ "1 stick string cheese" ],
-          steps: [
-            "Unwrap and eat."
-          ]
-        }
-      },
-      {
-        name: "Trail Mix", type: "snack",
-        basePrice: 1.10, calories: 170, protein: 5, carbs: 15, fat: 10,
-        recipe: {
-          ingredients: [ "1/4 cup trail mix" ],
-          steps: [
-            "Enjoy as a snack."
-          ]
-        }
+    // --- Theme logic ---
+    let theme = localStorage.getItem("theme") || (window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark" : "light");
+    function setTheme(t) {
+      document.documentElement.setAttribute("data-theme", t);
+      theme = t;
+      localStorage.setItem("theme", t);
+      document.getElementById("theme-btn").textContent = t === "dark" ? "🌚" : "🌞";
+      document.getElementById("theme-btn").classList.toggle("active", t==="dark");
+    }
+    setTheme(theme);
+    document.getElementById("theme-btn").onclick = () => setTheme(theme==="light" ? "dark" : "light");
+
+    // --- Units helpers ---
+    function toggleUnits(section) {
+      const units = document.getElementById(section+'-units').value;
+      if(units === 'imperial') {
+        document.getElementById(section+'-weight').classList.add('hidden');
+        document.getElementById(section+'-weight-label').textContent = 'Weight (lbs)';
+        document.getElementById(section+'-weight-lbs').classList.remove('hidden');
+        document.getElementById(section+'-height').classList.add('hidden');
+        document.getElementById(section+'-height-label').textContent = 'Height (ft/in)';
+        document.getElementById(section+'-height-imperial').classList.remove('hidden');
+      } else {
+        document.getElementById(section+'-weight').classList.remove('hidden');
+        document.getElementById(section+'-weight-label').textContent = 'Weight (kg)';
+        document.getElementById(section+'-weight-lbs').classList.add('hidden');
+        document.getElementById(section+'-height').classList.remove('hidden');
+        document.getElementById(section+'-height-label').textContent = 'Height (cm)';
+        document.getElementById(section+'-height-imperial').classList.add('hidden');
       }
-    ];
+    }
+    function getMetricWeight(section) {
+      const units = document.getElementById(section+'-units').value;
+      if(units === 'imperial') {
+        const lbs = parseFloat(document.getElementById(section+'-weight-lbs').value);
+        return lbs ? lbs * 0.453592 : null;
+      }
+      return parseFloat(document.getElementById(section+'-weight').value);
+    }
+    function getMetricHeight(section) {
+      const units = document.getElementById(section+'-units').value;
+      if(units === 'imperial') {
+        const ft = parseFloat(document.getElementById(section+'-height-ft').value) || 0;
+        const inches = parseFloat(document.getElementById(section+'-height-in').value) || 0;
+        return (ft * 12 + inches) * 2.54;
+      }
+      return parseFloat(document.getElementById(section+'-height').value);
+    }
+
+    // --- Auth/user storage ---
     let users = {};
-    let currentUser = null;
-    let theme = 'light';
+    let currentUser = null; // email
     function saveUsers() { localStorage.setItem('plannerUsers', JSON.stringify(users)); }
     function loadUsers() { users = JSON.parse(localStorage.getItem('plannerUsers') || '{}'); }
     function saveSession() { if(currentUser) localStorage.setItem('plannerCurrent', currentUser); }
     function loadSession() { currentUser = localStorage.getItem('plannerCurrent') || null; }
     function clearSession() { localStorage.removeItem('plannerCurrent'); }
-    function saveTheme(newTheme) { localStorage.setItem('plannerTheme', newTheme); }
-    function loadTheme() { return localStorage.getItem('plannerTheme') || 'light'; }
-    function setTheme(newTheme) {
-      theme = newTheme;
-      document.documentElement.setAttribute('data-theme', theme);
-      document.getElementById('theme-switch').checked = (theme === 'dark');
-      document.getElementById('theme-label').textContent = theme === 'dark' ? '🌙' : '🌞';
-      saveTheme(theme);
-    }
-    function toggleTheme() { setTheme(theme === 'light' ? 'dark' : 'light'); }
-    function showPanel(panel) {
-      document.getElementById('panel-mealplan').classList.toggle('hidden', panel !== 'mealplan');
-      document.getElementById('panel-profile').classList.toggle('hidden', panel !== 'profile');
-      document.getElementById('menu-btn-mealplan').classList.toggle('active', panel === 'mealplan');
-      document.getElementById('menu-btn-profile').classList.toggle('active', panel === 'profile');
-      if(panel === 'profile') loadProfileForm();
-      if(panel === 'mealplan') renderMealPlan();
-    }
     function showRegister() {
-      document.getElementById('auth-screen').classList.add('hidden');
-      document.getElementById('register-screen').classList.remove('hidden');
-      document.getElementById('reg-birthdate').max = new Date().toISOString().split('T')[0];
+      document.getElementById("auth-card").classList.add("hidden");
+      document.getElementById("register-card").classList.remove("hidden");
     }
     function showLogin() {
-      document.getElementById('register-screen').classList.add('hidden');
-      document.getElementById('auth-screen').classList.remove('hidden');
-    }
-    function showMainApp() {
-      document.getElementById('auth-screen').classList.add('hidden');
-      document.getElementById('register-screen').classList.add('hidden');
-      document.getElementById('main-app').classList.remove('hidden');
-      document.getElementById('logoutBtn').classList.remove('hidden');
-      showPanel('mealplan');
+      document.getElementById("auth-card").classList.remove("hidden");
+      document.getElementById("register-card").classList.add("hidden");
     }
     function validateEmail(email) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);}
     function validatePin(pin) { return /^\d{4}$/.test(pin);}
     function login() {
       loadUsers();
-      const email = document.getElementById('email').value.trim().toLowerCase();
-      const pin = document.getElementById('pin').value.trim();
+      const email = document.getElementById('login-email').value.trim().toLowerCase();
+      const pin = document.getElementById('login-pin').value.trim();
       if(!validateEmail(email)) return alert('Please enter a valid email.');
       if(!validatePin(pin)) return alert('PIN must be 4 digits.');
       if(users[email] && users[email].pin === pin) {
         currentUser = email;
         saveSession();
-        showMainApp();
+        startApp();
       } else {
         alert('Invalid email or PIN.');
       }
@@ -573,13 +495,14 @@
       const pin = document.getElementById('reg-pin').value.trim();
       const birthdate = document.getElementById('reg-birthdate').value;
       const zip = document.getElementById('reg-zip').value.trim().toUpperCase();
-      const weight = parseFloat(document.getElementById('reg-weight').value);
-      const height = parseFloat(document.getElementById('reg-height').value);
+      const weight = getMetricWeight('reg');
+      const height = getMetricHeight('reg');
       const gender = document.getElementById('reg-gender').value;
       const activity = document.getElementById('reg-activity').value;
       const goal = document.getElementById('reg-goal').value;
       const budget = parseFloat(document.getElementById('reg-budget').value);
       const allergies = document.getElementById('reg-allergies').value.trim();
+      const units = document.getElementById('reg-units').value;
       if(!validateEmail(email)) return alert('Please enter a valid email.');
       if(!validatePin(pin)) return alert('PIN must be 4 digits.');
       if(users[email]) return alert('Account already exists.');
@@ -587,21 +510,45 @@
       if(!zip) return alert('Please enter your ZIP or Postal Code.');
       if(!weight || !height) return alert('Please enter your weight and height.');
       users[email] = {
-        pin, birthdate, zip, weight, height, gender, activity, goal, budget, allergies
+        pin, birthdate, zip, weight, height, gender, activity, goal, budget, allergies, units
       };
       saveUsers();
       currentUser = email;
       saveSession();
-      showMainApp();
+      startApp();
     }
     function logout() {
       clearSession();
       currentUser = null;
-      document.getElementById('main-app').classList.add('hidden');
-      document.getElementById('logoutBtn').classList.add('hidden');
-      document.getElementById('auth-screen').classList.remove('hidden');
-      document.getElementById('email').value = '';
-      document.getElementById('pin').value = '';
+      showLogin();
+      document.getElementById("main-controls").style.display = "none";
+      document.getElementById("mealplan-card").classList.add("hidden");
+      document.getElementById("profile-card").classList.add("hidden");
+    }
+    function getUser() { loadUsers(); return currentUser ? users[currentUser] : null;}
+    function getAgeFromBirthdate(birthdate) {
+      if(!birthdate) return '';
+      const diff = Date.now() - new Date(birthdate).getTime();
+      return Math.floor(diff / (365.25 * 24 * 60 * 60 * 1000));
+    }
+
+    // --- UI navigation ---
+    function startApp() {
+      document.getElementById("auth-card").classList.add("hidden");
+      document.getElementById("register-card").classList.add("hidden");
+      document.getElementById("main-controls").style.display = "";
+      // Prompt for store first!
+      openStoreModal();
+    }
+    function showProfile() {
+      document.getElementById("mealplan-card").classList.add("hidden");
+      document.getElementById("profile-card").classList.remove("hidden");
+      loadProfileForm();
+    }
+    function showMealPlan() {
+      document.getElementById("profile-card").classList.add("hidden");
+      document.getElementById("mealplan-card").classList.remove("hidden");
+      renderMealPlan();
     }
     function loadProfileForm() {
       const user = getUser();
@@ -611,35 +558,240 @@
       document.getElementById('profile-birthdate').value = user.birthdate || '';
       document.getElementById('profile-zip').value = user.zip || '';
       document.getElementById('profile-budget').value = user.budget || '';
-      document.getElementById('profile-weight').value = user.weight || '';
-      document.getElementById('profile-height').value = user.height || '';
       document.getElementById('profile-gender').value = user.gender || 'male';
       document.getElementById('profile-activity').value = user.activity || '1.2';
       document.getElementById('profile-goal').value = user.goal || 'maintain';
       document.getElementById('profile-allergies').value = user.allergies || '';
+      document.getElementById('profile-units').value = user.units || 'metric';
+      // Set weight and height fields based on units
+      if((user.units || 'metric') === 'imperial') {
+        document.getElementById('profile-weight').classList.add('hidden');
+        document.getElementById('profile-weight-label').textContent = 'Weight (lbs)';
+        document.getElementById('profile-weight-lbs').classList.remove('hidden');
+        document.getElementById('profile-weight-lbs').value = user.weight ? Math.round(user.weight/0.453592) : '';
+        document.getElementById('profile-height').classList.add('hidden');
+        document.getElementById('profile-height-label').textContent = 'Height (ft/in)';
+        document.getElementById('profile-height-imperial').classList.remove('hidden');
+        if(user.height) {
+          const totalInches = user.height / 2.54;
+          const ft = Math.floor(totalInches/12);
+          const inch = Math.round(totalInches - ft*12);
+          document.getElementById('profile-height-ft').value = ft;
+          document.getElementById('profile-height-in').value = inch;
+        } else {
+          document.getElementById('profile-height-ft').value = '';
+          document.getElementById('profile-height-in').value = '';
+        }
+      } else {
+        document.getElementById('profile-weight').classList.remove('hidden');
+        document.getElementById('profile-weight-label').textContent = 'Weight (kg)';
+        document.getElementById('profile-weight-lbs').classList.add('hidden');
+        document.getElementById('profile-weight').value = user.weight || '';
+        document.getElementById('profile-height').classList.remove('hidden');
+        document.getElementById('profile-height-label').textContent = 'Height (cm)';
+        document.getElementById('profile-height-imperial').classList.add('hidden');
+        document.getElementById('profile-height').value = user.height || '';
+      }
     }
     function saveProfile() {
       const user = getUser();
       user.birthdate = document.getElementById('profile-birthdate').value;
       user.zip = document.getElementById('profile-zip').value.trim().toUpperCase();
       user.budget = parseFloat(document.getElementById('profile-budget').value);
-      user.weight = parseFloat(document.getElementById('profile-weight').value);
-      user.height = parseFloat(document.getElementById('profile-height').value);
       user.gender = document.getElementById('profile-gender').value;
       user.activity = document.getElementById('profile-activity').value;
       user.goal = document.getElementById('profile-goal').value;
       user.allergies = document.getElementById('profile-allergies').value.trim();
+      user.units = document.getElementById('profile-units').value;
+      // Convert to metric for storage
+      user.weight = getMetricWeight('profile');
+      user.height = getMetricHeight('profile');
       saveUsers();
-      showPanel('mealplan');
-      renderMealPlan();
+      showMealPlan();
       alert('Profile updated!');
     }
-    function getUser() { loadUsers(); return currentUser ? users[currentUser] : null;}
-    function getAgeFromBirthdate(birthdate) {
-      if(!birthdate) return '';
-      const diff = Date.now() - new Date(birthdate).getTime();
-      return Math.floor(diff / (365.25 * 24 * 60 * 60 * 1000));
+
+    // --- Currency logic ---
+    function detectCurrencyFromZip(zip) {
+      if(!zip) return "USD";
+      zip = zip.toUpperCase();
+      if(/^[A-Z]\d[A-Z]/.test(zip)) return "CAD";
+      if(/^\d{5}(-\d{4})?$/.test(zip)) return "USD";
+      return "USD";
     }
+    function detectCurrencyFromCountry(country) {
+      if(country==="CA"||country==="CAN"||country==="Canada") return "CAD";
+      if(country==="US"||country==="USA"||country==="United States") return "USD";
+      return "USD";
+    }
+
+    // --- Store Finder (OpenStreetMap Overpass API) ---
+    let selectedStore = null;
+    let userCurrency = "USD";
+    function openStoreModal() {
+      document.getElementById("store-modal").classList.remove("hidden");
+      document.getElementById("store-list").innerHTML = "";
+      document.getElementById("store-search-status").textContent = "";
+      document.getElementById("store-select-hint").textContent = "";
+      document.getElementById("store-zip").value = getUser()?.zip || "";
+      selectedStore = null;
+    }
+    function closeStoreModal() {
+      document.getElementById("store-modal").classList.add("hidden");
+      if(selectedStore) showMealPlan();
+    }
+    function detectLocation() {
+      document.getElementById("store-search-status").textContent = "Detecting location…";
+      navigator.geolocation.getCurrentPosition(function(pos) {
+        const lat = pos.coords.latitude, lon = pos.coords.longitude;
+        fetchStoresNearby(lat, lon);
+        // Try to get country for currency
+        fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`)
+          .then(resp=>resp.json())
+          .then(data=>{
+            userCurrency = detectCurrencyFromCountry(data.address?.country_code?.toUpperCase()||"");
+          });
+      }, function(err) {
+        document.getElementById("store-search-status").textContent = "Location failed. Enter ZIP or postal code.";
+      });
+    }
+    function searchStoresByZip() {
+      const zip = document.getElementById("store-zip").value.trim();
+      if(!zip) { document.getElementById("store-search-status").textContent = "Enter ZIP/postal code."; return; }
+      document.getElementById("store-search-status").textContent = "Searching for stores…";
+      // Get lat/lon for the zip/postal code
+      fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(zip)}`)
+        .then(resp=>resp.json())
+        .then(arr=>{
+          if(arr.length===0) {
+            document.getElementById("store-search-status").textContent = "Location not found.";
+            return;
+          }
+          const lat = arr[0].lat, lon = arr[0].lon;
+          fetchStoresNearby(lat, lon);
+          userCurrency = detectCurrencyFromZip(zip);
+        });
+    }
+    function fetchStoresNearby(lat, lon) {
+      document.getElementById("store-search-status").textContent = "Finding stores near you…";
+      // Query for supermarkets, grocery, convenience within 5km
+      const query = `
+        [out:json][timeout:15];
+        (
+          node(around:5000,${lat},${lon})[shop~"supermarket|grocery|convenience"];
+          way(around:5000,${lat},${lon})[shop~"supermarket|grocery|convenience"];
+          relation(around:5000,${lat},${lon})[shop~"supermarket|grocery|convenience"];
+        );
+        out center tags;
+      `;
+      fetch("https://overpass-api.de/api/interpreter", {
+        method: "POST",
+        body: query,
+        headers: { "Content-Type": "text/plain" }
+      })
+      .then(resp=>resp.json())
+      .then(data=>{
+        let stores = [];
+        if(data.elements) {
+          for(const el of data.elements) {
+            let s = {
+              name: el.tags?.name||"Unnamed Store",
+              website: el.tags?.website||el.tags?.contact_website||"",
+              lat: el.lat||el.center?.lat,
+              lon: el.lon||el.center?.lon,
+              brand: el.tags?.brand||"",
+              addr: [el.tags?.addr_street, el.tags?.addr_housenumber, el.tags?.addr_city].filter(Boolean).join(" ")
+            };
+            stores.push(s);
+          }
+        }
+        // Deduplicate by lat/lon+name
+        stores = stores.filter((s,i,arr)=>arr.findIndex(x=>x.name===s.name&&Math.abs(x.lat-s.lat)<0.001&&Math.abs(x.lon-s.lon)<0.001)===i);
+        displayStoreList(stores.slice(0,12), lat, lon);
+      })
+      .catch(()=>{
+        document.getElementById("store-search-status").textContent = "Failed to find stores. Try again later.";
+      });
+    }
+    function displayStoreList(stores, lat, lon) {
+      const ul = document.getElementById("store-list");
+      ul.innerHTML = "";
+      if(!stores.length) {
+        ul.innerHTML = "<li>No grocery stores found nearby.</li>";
+        document.getElementById("store-search-status").textContent = "";
+        return;
+      }
+      document.getElementById("store-search-status").textContent = "";
+      stores.forEach((store,i) => {
+        let li = document.createElement("li");
+        let a = document.createElement("a");
+        a.href="#";
+        a.className="store-link";
+        a.textContent = `${store.name}${store.brand ? " ("+store.brand+")" : ""}`;
+        a.onclick = ()=>{ selectStore(store); return false; };
+        li.appendChild(a);
+        if(store.website) {
+          let w = document.createElement("a");
+          w.href=store.website;
+          w.textContent="(website)";
+          w.style.marginLeft="8px";
+          w.style.fontSize="0.97em";
+          w.style.color="var(--store-link)";
+          w.target="_blank";
+          li.appendChild(w);
+        } else {
+          let w = document.createElement("a");
+          w.href=`https://www.google.com/maps/dir/?api=1&destination=${store.lat},${store.lon}`;
+          w.textContent="(directions)";
+          w.style.marginLeft="8px";
+          w.style.fontSize="0.97em";
+          w.style.color="var(--store-link)";
+          w.target="_blank";
+          li.appendChild(w);
+          let txt = document.createElement("span");
+          txt.textContent = " [no website]";
+          txt.style.fontSize="0.92em";
+          txt.style.color="var(--accent2)";
+          li.appendChild(txt);
+        }
+        ul.appendChild(li);
+      });
+      document.getElementById("store-select-hint").textContent = "Click a store to select.";
+    }
+    function selectStore(store) {
+      selectedStore = store;
+      document.getElementById("store-select-hint").textContent = "Store selected: " + store.name + ". Loading meal plan…";
+      setTimeout(closeStoreModal, 700);
+    }
+
+    // --- Meal Plan Logic ---
+    // (Same meal database and functions as before)
+    const MEALS = [
+      {name:"Scrambled Eggs & Toast",type:"breakfast",basePrice:1.75,calories:320,protein:14,carbs:28,fat:13,recipe:{ingredients:["2 eggs","2 slices whole wheat bread","1 tsp butter","Salt & pepper"],steps:["Whisk eggs with salt and pepper.","Heat butter in pan and scramble eggs.","Toast bread.","Serve eggs with toast."]}},
+      {name:"Oatmeal with Fruit",type:"breakfast",basePrice:1.15,calories:290,protein:8,carbs:54,fat:4,recipe:{ingredients:["1/2 cup rolled oats","1 cup water or milk","1/2 banana","1/4 cup berries"],steps:["Combine oats and liquid, cook until soft.","Top with sliced banana and berries."]}},
+      {name:"Greek Yogurt & Berries",type:"breakfast",basePrice:2.25,calories:210,protein:15,carbs:25,fat:3,recipe:{ingredients:["1 cup nonfat Greek yogurt","1/2 cup mixed berries","1 tsp honey (optional)"],steps:["Spoon yogurt into bowl.","Top with berries and drizzle honey."]}},
+      {name:"Banana Pancakes",type:"breakfast",basePrice:2.00,calories:350,protein:10,carbs:62,fat:7,recipe:{ingredients:["1 ripe banana","2 eggs","1/2 cup flour","1/2 tsp baking powder","Splash milk","Butter or oil for pan"],steps:["Mash banana and mix with eggs and milk.","Stir in flour and baking powder.","Cook pancakes on greased skillet until golden."]}},
+      {name:"Avocado Toast",type:"breakfast",basePrice:1.60,calories:270,protein:7,carbs:30,fat:14,recipe:{ingredients:["2 slices whole wheat bread","1/2 avocado","Salt & pepper","Lemon juice"],steps:["Toast bread.","Mash avocado with lemon, salt, pepper.","Spread avocado mixture on toast."]}},
+      {name:"Rice & Beans Bowl",type:"lunch",basePrice:2.50,calories:410,protein:13,carbs:80,fat:4,recipe:{ingredients:["1 cup cooked rice","1/2 cup cooked beans","Salsa","Chopped cilantro"],steps:["Warm rice and beans.","Top with salsa and cilantro."]}},
+      {name:"Turkey Sandwich",type:"lunch",basePrice:2.10,calories:340,protein:18,carbs:38,fat:9,recipe:{ingredients:["2 slices whole wheat bread","3 slices deli turkey","Lettuce","Tomato","1 tsp mayo"],steps:["Layer turkey, lettuce, tomato on bread.","Spread mayo, assemble sandwich."]}},
+      {name:"Chicken Salad",type:"lunch",basePrice:3.00,calories:370,protein:26,carbs:11,fat:22,recipe:{ingredients:["1 cup cooked, chopped chicken","2 tbsp mayo","Chopped celery","Chopped onion","Lettuce leaves"],steps:["Mix chicken, mayo, celery, onion.","Serve on lettuce leaves."]}},
+      {name:"Veggie Wrap",type:"lunch",basePrice:2.30,calories:320,protein:8,carbs:46,fat:9,recipe:{ingredients:["1 whole wheat tortilla","1/2 cup hummus","Shredded carrots","Spinach","Cucumber slices"],steps:["Spread hummus on tortilla.","Layer veggies, roll up."]}},
+      {name:"Lentil Soup & Bread",type:"lunch",basePrice:2.40,calories:330,protein:15,carbs:52,fat:4,recipe:{ingredients:["1 cup lentil soup","1 slice whole wheat bread"],steps:["Heat soup, serve with bread."]}},
+      {name:"Spaghetti Marinara",type:"dinner",basePrice:2.75,calories:450,protein:13,carbs:78,fat:7,recipe:{ingredients:["2 oz dry spaghetti","1 cup marinara","Parmesan (optional)","Basil"],steps:["Cook spaghetti, heat marinara.","Combine, top with parmesan and basil."]}},
+      {name:"Baked Chicken Thighs & Potatoes",type:"dinner",basePrice:3.80,calories:520,protein:28,carbs:32,fat:27,recipe:{ingredients:["1 chicken thigh","1 cup potatoes","Olive oil","Herbs, salt & pepper"],steps:["Toss potatoes in oil, herbs.","Roast chicken and potatoes at 400°F for 35min."]}},
+      {name:"Stir Fry Veggies & Rice",type:"dinner",basePrice:2.70,calories:400,protein:8,carbs:74,fat:7,recipe:{ingredients:["1 cup rice","2 cups mixed veggies","Soy sauce","1 tbsp oil"],steps:["Stir fry veggies in oil.","Add cooked rice and soy sauce, stir until hot."]}},
+      {name:"Turkey Meatballs & Pasta",type:"dinner",basePrice:3.50,calories:480,protein:25,carbs:57,fat:16,recipe:{ingredients:["3 turkey meatballs","1 cup pasta","1/2 cup marinara","Parmesan"],steps:["Cook pasta, heat meatballs in marinara.","Serve together with cheese."]}},
+      {name:"Tofu Curry & Rice",type:"dinner",basePrice:2.90,calories:390,protein:14,carbs:52,fat:12,recipe:{ingredients:["1/2 block firm tofu","1 cup cooked rice","1/2 cup curry sauce","Peas"],steps:["Cube tofu, cook in curry sauce with peas.","Serve over rice."]}},
+      {name:"Apple & Peanut Butter",type:"snack",basePrice:0.90,calories:160,protein:4,carbs:29,fat:6,recipe:{ingredients:["1 apple","1 tbsp peanut butter"],steps:["Slice apple, dip in peanut butter."]}},
+      {name:"Banana",type:"snack",basePrice:0.55,calories:95,protein:1,carbs:24,fat:0,recipe:{ingredients:["1 banana"],steps:["Peel and eat."]}},
+      {name:"Carrots & Hummus",type:"snack",basePrice:1.20,calories:130,protein:3,carbs:21,fat:5,recipe:{ingredients:["1 cup carrot sticks","2 tbsp hummus"],steps:["Dip carrots in hummus."]}},
+      {name:"String Cheese",type:"snack",basePrice:0.80,calories:80,protein:7,carbs:1,fat:6,recipe:{ingredients:["1 stick string cheese"],steps:["Unwrap and eat."]}},
+      {name:"Trail Mix",type:"snack",basePrice:1.10,calories:170,protein:5,carbs:15,fat:10,recipe:{ingredients:["1/4 cup trail mix"],steps:["Enjoy as a snack."]}}
+    ];
+    const US_CA_REGION_PRICE_MODIFIERS = {
+      "CA": 1.3, "NY": 1.23, "TX": 0.95, "FL": 1.02, "WA": 1.18, "AZ": 1.00, "IL": 1.10, "NC": 0.97, "GA": 0.97, "PA": 1.10, "OH": 1.05,
+      "ON": 1.18, "QC": 1.16, "BC": 1.22, "AB": 1.02, "MB": 1.12, "NS": 1.15, "SK": 1.08, "NB": 1.14, "NL": 1.15, "PE": 1.13
+    };
     function extractRegion(zip) {
       if(!zip) return null;
       const z = zip.replace(/\s/g, '').toUpperCase();
@@ -746,16 +898,33 @@
     function renderMealPlan() {
       const user = getUser();
       if(!user) return;
+      if(!selectedStore) {
+        document.getElementById("store-reminder").classList.remove("hidden");
+        document.getElementById("store-reminder").textContent = "Please select a grocery store to see your meal plan.";
+        document.getElementById("mealplan-content").innerHTML = "";
+        return;
+      } else {
+        document.getElementById("store-reminder").classList.add("hidden");
+      }
       const result = generateMealPlan(user);
       const budget = user.budget || 75;
-      let html = `<div>
-          <strong>Calories Target:</strong> ${calculateCalories(user)} kcal/day
-          <br><strong>Your Budget:</strong> $${budget.toFixed(2)} / week
-        </div><div style="margin-top:18px;">`;
+      let currency = userCurrency || detectCurrencyFromZip(user.zip);
+      let storeText = selectedStore.name + (selectedStore.brand ? " ("+selectedStore.brand+")" : "");
+      let storeLink = selectedStore.website ? `<a href="${selectedStore.website}" target="_blank" style="color:var(--store-link);font-weight:500;">store website</a>` :
+        `<a href="https://www.google.com/maps/dir/?api=1&destination=${selectedStore.lat},${selectedStore.lon}" target="_blank" style="color:var(--store-link);font-weight:500;">Google Maps directions</a> (no website)`;
+      let html = `<div style="margin-bottom:10px;">
+        <strong>Store:</strong> ${storeText} &mdash; ${storeLink}<br>
+        <strong>Currency:</strong> ${currency}<br>
+        <strong>Calories Target:</strong> ${calculateCalories(user)} kcal/day<br>
+        <strong>Your Budget:</strong> ${currency} ${budget.toFixed(2)} / week
+      </div>`;
+      html += `<div style="font-size:0.98em;color:var(--accent2);margin:4px 0 13px 0;">
+        <span>Note: We cannot guarantee product availability at your selected store. Please check their website or call ahead for specific items.</span>
+      </div>`;
       if(!result) {
         html += `<div class="no-plan-message">No meal plan can be generated under your current budget and preferences.<br>Please increase your budget or relax restrictions.</div>`;
       } else {
-        html += `<strong>Plan Total Cost:</strong> $${result.totalCost.toFixed(2)}<br>`;
+        html += `<strong>Plan Total Cost:</strong> ${currency} ${result.totalCost.toFixed(2)}<br>`;
         html += `<table class="meal-table"><thead><tr><th>Day</th><th>Meal</th><th>Calories</th><th>Protein</th><th>Carbs</th><th>Fat</th><th>Price</th></tr></thead><tbody>`;
         result.plan.forEach(day => {
           day.meals.forEach((meal,i) => {
@@ -769,13 +938,12 @@
               <td>${meal.protein}g</td>
               <td>${meal.carbs}g</td>
               <td>${meal.fat}g</td>
-              <td>$${meal.price ? meal.price.toFixed(2):'?'}</td>
+              <td>${currency} ${meal.price ? meal.price.toFixed(2):'?'}</td>
             </tr>`;
           });
         });
         html += `</tbody></table>`;
       }
-      html += `</div>`;
       document.getElementById('mealplan-content').innerHTML = html;
     }
     function toggleRecipe(name) {
@@ -798,16 +966,20 @@
       el.classList.toggle('hidden');
     }
     window.toggleRecipe = toggleRecipe;
-    function initApp() {
+
+    // --- On load: hook up events and auto-show login/register/main ---
+    window.onload = function() {
       document.getElementById('reg-birthdate').max = new Date().toISOString().split('T')[0];
       document.getElementById('profile-birthdate').max = new Date().toISOString().split('T')[0];
-      setTheme(loadTheme());
-      document.getElementById('theme-switch').addEventListener('change', toggleTheme);
       loadUsers();
       loadSession();
-      if(currentUser && users[currentUser]) showMainApp();
-    }
-    window.onload = initApp;
+      toggleUnits('reg');
+      toggleUnits('profile');
+      document.getElementById('reg-units').addEventListener('change', ()=>toggleUnits('reg'));
+      document.getElementById('profile-units').addEventListener('change', ()=>toggleUnits('profile'));
+      if(currentUser && users[currentUser]) startApp();
+      else showLogin();
+    };
   </script>
 </body>
 </html>
