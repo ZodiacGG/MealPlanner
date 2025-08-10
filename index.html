@@ -1026,6 +1026,10 @@
       }
       document.getElementById('mealplan-content').innerHTML = html;
       // Render food summary!
+      
+      
+
+
       renderFoodSummary(result, user, currency, getPriceModifier(user.zip), budget);
     }
     function toggleRecipe(name) {
@@ -1091,6 +1095,33 @@
       "oats": 2.2,
       "pasta": 1.6,
       "trail mix": 2.5,
+    };
+      const GROCERY_PACKAGES = {
+  "eggs": {size: 12, unit: "ct carton", price: 3.5},
+  "milk": {size: 1, unit: "gallon", price: 4.0},
+  "bread": {size: 1, unit: "loaf", price: 3.0},
+  "banana": {size: 6, unit: "bunch", price: 1.5},
+  "potatoes": {size: 5, unit: "lb bag", price: 4.5},
+  "cheese": {size: 8, unit: "oz block", price: 3.0},
+  "chicken": {size: 1.5, unit: "lb pack", price: 7.0},
+  "tofu": {size: 14, unit: "oz block", price: 2.5},
+  "rice": {size: 2, unit: "lb bag", price: 2.5},
+  "beans": {size: 1, unit: "lb bag or 4 cans", price: 2.0},
+  "pasta": {size: 1, unit: "lb box", price: 1.8},
+  "oats": {size: 18, unit: "oz tub", price: 3.0},
+  "yogurt": {size: 32, unit: "oz tub", price: 4.0},
+  "spinach": {size: 10, unit: "oz bag", price: 3.0},
+  "lettuce": {size: 1, unit: "head or bag", price: 2.2},
+  "apple": {size: 3, unit: "lb bag", price: 5.0},
+  "carrot": {size: 1, unit: "lb bag", price: 1.5},
+  "hummus": {size: 8, unit: "oz tub", price: 2.8},
+  "trail mix": {size: 8, unit: "oz bag", price: 3.5},
+  "ground beef": {size: 1, unit: "lb pack", price: 6.0},
+  "cucumber": {size: 1, unit: "ct", price: 1.2},
+  "tomato": {size: 4, unit: "ct", price: 2.5},
+  "bell pepper": {size: 3, unit: "ct", price: 3.0},
+  "onion": {size: 3, unit: "lb bag", price: 2.0},
+  // add more as needed
     };
 
     // Ingredient normalization for summary
@@ -1158,66 +1189,70 @@
       return "";
     }
     function renderFoodSummary(planResult, user, currency, priceMod, budget) {
-      // 1. Aggregate all ingredients
-      let allIngredients = {};
-      planResult.plan.forEach(day=>{
-        day.meals.forEach(meal=>{
-          meal.recipe.ingredients.forEach(rawIng=>{
-            let key = normalizeIngredient(rawIng);
-            let amtObj = getAmountFromIngredientString(rawIng);
-            if(!allIngredients[key]) allIngredients[key] = {raw:[], total:0, unit:amtObj.unit};
-            allIngredients[key].raw.push(rawIng);
-            allIngredients[key].total += amtObj.amount;
-          });
-        });
-      });
-      // 2. Apply package rounding for main goods
-      let summaryRows = [];
-      let totalPkgCost = 0;
-      Object.keys(allIngredients).forEach(ing=>{
-        let total = allIngredients[ing].total;
-        let pkg = PACKAGE_SIZES[ing];
-        let price = PACKAGE_PRICES[ing] ? PACKAGE_PRICES[ing]*priceMod : 0;
-        let pkgLabel = "";
-        let pkgQty = total;
-        let pkgCost = 0;
-        if(pkg && price) {
-          // Find smallest pkg size >= needed, else largest available
-          let picked = pkg.find(sz=>sz>=total) || pkg[pkg.length-1];
-          pkgQty = picked;
-          pkgLabel = picked + (ing==="eggs"||ing==="banana"||ing==="apple"||ing==="carrot"?" ct":ing==="bread"?" loaf":ing==="milk"?" L":" unit");
-          pkgCost = Math.round(price*100)/100;
-          totalPkgCost += pkgCost;
-        } else {
-          pkgLabel = "~" + Math.round(total*100)/100;
+  let allIngredients = {};
+  planResult.plan.forEach(day=>{
+    day.meals.forEach(meal=>{
+      meal.recipe.ingredients.forEach(rawIng=>{
+        let key = normalizeIngredient(rawIng);
+        let amtObj = getAmountFromIngredientString(rawIng);
+        // crude conversion for spinach (cups to oz, 1 cup fresh ≈ 1 oz)
+        if(key === "spinach" && amtObj.unit.match(/cup/i)) {
+          amtObj.amount = amtObj.amount * 1; // 1 cup ≈ 1 oz
+          amtObj.unit = "oz";
         }
-        summaryRows.push({
-          name: ing.charAt(0).toUpperCase()+ing.slice(1),
-          total: Math.round(total*100)/100,
-          pkg: pkgLabel,
-          cost: pkgCost ? `${currency} ${pkgCost.toFixed(2)}` : ""
-        });
+        if(!allIngredients[key]) allIngredients[key] = {raw:[], total:0, unit:amtObj.unit};
+        allIngredients[key].raw.push(rawIng);
+        allIngredients[key].total += amtObj.amount;
       });
-      // 3. Budget check
-      let warn = "";
-      if(totalPkgCost > budget) {
-        warn = `Warning: Estimated staple/package cost (${currency} ${totalPkgCost.toFixed(2)}) exceeds your budget (${currency} ${budget.toFixed(2)}). Consider removing a meal, using smaller packages, or shopping for sales.`;
-      }
-      // 4. Render
-      let html = `<h3>Weekly Food Shopping Summary</h3>
-      <table class="food-summary-table">
-        <thead><tr><th>Ingredient</th><th>Estimated Needed</th><th>Package/Amount to Buy</th><th>Est. Price</th></tr></thead>
-        <tbody>
-          ${summaryRows.map(r=>`<tr>
-            <td>${r.name}</td><td>${r.total}</td><td>${r.pkg}</td><td>${r.cost}</td>
-          </tr>`).join("")}
-        </tbody>
-      </table>
-      ${warn?`<div class="food-summary-warning">${warn}</div>`:""}
-      <div style="font-size:0.95em;color:var(--accent2);margin-top:7px;">* Prices and packaging are estimates. Adjust for local store options and check for sales!</div>
-      `;
-      document.getElementById("food-summary").innerHTML = html;
-      document.getElementById("food-summary").classList.remove("hidden");
+    });
+  });
+
+  let summaryRows = [];
+  let totalPkgCost = 0;
+  Object.keys(allIngredients).forEach(ing=>{
+    let need = allIngredients[ing].total;
+    let pkg = GROCERY_PACKAGES[ing];
+    let showPkg = "?";
+    let showCost = "?";
+    let pkgCount = 1;
+    if(pkg) {
+      // crude: convert need to package units, always round UP to nearest package
+      let needInPkg = need / pkg.size;
+      pkgCount = Math.ceil(needInPkg);
+      showPkg = `${pkgCount} x ${pkg.size} ${pkg.unit}`;
+      let pkgCost = pkgCount * pkg.price * priceMod;
+      showCost = `${currency} ${pkgCost.toFixed(2)}`;
+      totalPkgCost += pkgCost;
+    } else {
+      showPkg = "~" + Math.round(need*100)/100 + " units";
+      showCost = "";
+    }
+    summaryRows.push({
+      name: ing.charAt(0).toUpperCase()+ing.slice(1),
+      need: Math.round(need*100)/100,
+      pkg: showPkg,
+      cost: showCost
+    });
+  });
+
+  let warn = "";
+  if(totalPkgCost > budget) {
+    warn = `Warning: Estimated staple/package cost (${currency} ${totalPkgCost.toFixed(2)}) exceeds your budget (${currency} ${budget.toFixed(2)}). Consider removing a meal, using smaller packages, or shopping for sales.`;
+  }
+  let html = `<h3>Weekly Food Shopping Summary</h3>
+  <table class="food-summary-table">
+    <thead><tr><th>Ingredient</th><th>Estimated Needed</th><th>Package to Buy</th><th>Est. Price</th></tr></thead>
+    <tbody>
+      ${summaryRows.map(r=>`<tr>
+        <td>${r.name}</td><td>${r.need}</td><td>${r.pkg}</td><td>${r.cost}</td>
+      </tr>`).join("")}
+    </tbody>
+  </table>
+  ${warn?`<div class="food-summary-warning">${warn}</div>`:""}
+  <div style="font-size:0.95em;color:var(--accent2);margin-top:7px;">* Prices and packaging are estimates. Adjust for local store options and check for sales!</div>
+  `;
+  document.getElementById("food-summary").innerHTML = html;
+  document.getElementById("food-summary").classList.remove("hidden");
     }
 
     // --- On load: hook up events and auto-show login/register/main ---
