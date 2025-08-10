@@ -7,279 +7,89 @@
   <meta name="color-scheme" content="dark light">
   <style>
     :root {
-      --primary: #667eea;
-      --secondary: #764ba2;
-      --white: #fff;
-      --black: #222;
-      --gray: #f8f9fa;
-      --light-bg: #f9f8ff;
-      --dark-bg: #21223b;
-      --dark-card: #292a3d;
-      --dark-text: #eaeafd;
-      --highlight: #ffae42;
+      --primary: #667eea; --secondary: #764ba2; --white: #fff; --black: #222;
+      --gray: #f8f9fa; --light-bg: #f9f8ff; --dark-bg: #21223b; --dark-card: #292a3d;
+      --dark-text: #eaeafd; --highlight: #ffae42;
     }
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-      min-height: 100vh;
-      color: var(--black);
+      min-height: 100vh; color: var(--black);
       transition: background 0.4s, color 0.4s;
     }
-    [data-theme="dark"] body {
-      background: var(--dark-bg);
-      color: var(--dark-text);
-    }
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 24px;
-    }
-    .app-header {
-      text-align: center;
-      margin-bottom: 30px;
-      color: var(--white);
-    }
-    .app-header h1 {
-      font-size: 2.2rem;
-      margin-bottom: 10px;
-      text-shadow: 2px 2px 7px rgba(0,0,0,0.13);
-    }
+    [data-theme="dark"] body { background: var(--dark-bg); color: var(--dark-text); }
+    .container { max-width: 900px; margin: 0 auto; padding: 24px; }
+    .app-header { text-align: center; margin-bottom: 30px; color: var(--white);}
+    .app-header h1 { font-size: 2.2rem; margin-bottom: 10px; text-shadow: 2px 2px 7px rgba(0,0,0,0.13);}
     .card {
-      background: rgba(255,255,255,0.97);
-      border-radius: 18px;
-      padding: 28px 22px;
-      margin-bottom: 22px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.09);
-      border: 1px solid rgba(255,255,255,0.17);
-      position: relative;
-      transition: background 0.4s, color 0.4s;
+      background: rgba(255,255,255,0.97); border-radius: 18px; padding: 28px 22px;
+      margin-bottom: 22px; box-shadow: 0 8px 32px rgba(0,0,0,0.09);
+      border: 1px solid rgba(255,255,255,0.17); position: relative; transition: background 0.4s, color 0.4s;
     }
-    [data-theme="dark"] .card {
-      background: var(--dark-card);
-      color: var(--dark-text);
-      border: 1px solid #38396c;
-    }
+    [data-theme="dark"] .card { background: var(--dark-card); color: var(--dark-text); border: 1px solid #38396c;}
     .form-group { margin-bottom: 16px; }
-    label {
-      display: block;
-      margin-bottom: 7px;
-      font-weight: 500;
-      color: #4b4b4b;
-    }
-    [data-theme="dark"] label { color: var(--dark-text); }
+    label { display: block; margin-bottom: 7px; font-weight: 500; color: #4b4b4b;}
+    [data-theme="dark"] label { color: var(--dark-text);}
     input, select, textarea {
-      width: 100%;
-      padding: 11px 14px;
-      border: 2px solid #e1e5e9;
-      border-radius: 8px;
-      font-size: 15px;
-      background: var(--white);
-      color: var(--black);
-      transition: border-color 0.3s, background 0.4s, color 0.4s;
+      width: 100%; padding: 11px 14px; border: 2px solid #e1e5e9; border-radius: 8px; font-size: 15px;
+      background: var(--white); color: var(--black); transition: border-color 0.3s, background 0.4s, color 0.4s;
     }
     input:focus, select:focus, textarea:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 2px rgba(102,126,234,0.10);
+      outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px rgba(102,126,234,0.10);
     }
-    [data-theme="dark"] input,
-    [data-theme="dark"] select,
-    [data-theme="dark"] textarea {
-      background: #26273e;
-      color: var(--dark-text);
-      border: 2px solid #333455;
+    [data-theme="dark"] input, [data-theme="dark"] select, [data-theme="dark"] textarea {
+      background: #26273e; color: var(--dark-text); border: 2px solid #333455;
     }
-    .btn {
-      padding: 11px 20px;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s;
-      text-decoration: none;
-      display: inline-block;
-      text-align: center;
-    }
-    .btn-primary {
-      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-      color: var(--white);
-    }
-    .btn-primary:hover {
-      filter: brightness(1.05);
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.21);
-    }
-    .btn-secondary {
-      background: var(--gray);
-      color: #444;
-      border: 2px solid #e1e5e9;
-    }
-    .btn-secondary:hover {
-      background: #e9ecef;
-    }
-    [data-theme="dark"] .btn-secondary {
-      background: #242545;
-      color: var(--dark-text);
-      border: 2px solid #343656;
-    }
-    [data-theme="dark"] .btn-secondary:hover {
-      background: #32345d;
-    }
-    .hidden { display: none !important; }
-    .menu-bar {
-      display: flex;
-      gap: 12px;
-      justify-content: flex-end;
-      margin-bottom: 18px;
-    }
-    .menu-bar button {
-      font-size: 15px;
-      padding: 7px 16px;
-      border-radius: 18px;
-      background: var(--gray);
-      color: #444;
-      border: 1px solid #e1e5e9;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    [data-theme="dark"] .menu-bar button {
-      background: #232340;
-      color: var(--dark-text);
-      border: 1px solid #393b6c;
-    }
-    .menu-bar .active {
-      background: var(--primary);
-      color: var(--white);
-      border: 1px solid var(--primary);
-    }
-    .theme-toggle {
-      background: none;
-      border: none;
-      font-size: 1.4rem;
-      margin-left: 4px;
-      cursor: pointer;
-    }
+    .btn { padding: 11px 20px; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s; text-decoration: none; display: inline-block; text-align: center; }
+    .btn-primary { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: var(--white);}
+    .btn-primary:hover { filter: brightness(1.05); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(102, 126, 234, 0.21);}
+    .btn-secondary { background: var(--gray); color: #444; border: 2px solid #e1e5e9;}
+    .btn-secondary:hover { background: #e9ecef;}
+    [data-theme="dark"] .btn-secondary { background: #242545; color: var(--dark-text); border: 2px solid #343656;}
+    [data-theme="dark"] .btn-secondary:hover { background: #32345d;}
+    .hidden { display: none !important;}
+    .menu-bar { display: flex; gap: 12px; justify-content: flex-end; margin-bottom: 18px;}
+    .menu-bar button { font-size: 15px; padding: 7px 16px; border-radius: 18px; background: var(--gray); color: #444; border: 1px solid #e1e5e9; cursor: pointer; transition: background 0.3s;}
+    [data-theme="dark"] .menu-bar button { background: #232340; color: var(--dark-text); border: 1px solid #393b6c;}
+    .menu-bar .active { background: var(--primary); color: var(--white); border: 1px solid var(--primary);}
+    .theme-toggle { background: none; border: none; font-size: 1.4rem; margin-left: 4px; cursor: pointer;}
     .security-note {
-      background: #fff7e6;
-      color: #b36b00;
-      border-left: 5px solid var(--highlight);
-      padding: 12px 18px;
-      border-radius: 8px;
-      margin-bottom: 18px;
-      font-size: 1rem;
+      background: #fff7e6; color: #b36b00; border-left: 5px solid var(--highlight);
+      padding: 12px 18px; border-radius: 8px; margin-bottom: 18px; font-size: 1rem;
     }
-    [data-theme="dark"] .security-note {
-      background: #322e1a;
-      color: #ffd180;
-      border-color: #ffd180;
-    }
-    .profile-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
-    }
-    @media (max-width: 700px) {
-      .profile-row { grid-template-columns: 1fr; gap: 10px; }
-      .container { padding: 7px; }
-      .card { padding: 14px 7px; }
-    }
-    .meal-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 16px;
-    }
-    .meal-table th, .meal-table td {
-      border: 1px solid #ddd;
-      padding: 7px 8px;
-      text-align: left;
-    }
-    .meal-table th {
-      background: var(--primary);
-      color: var(--white);
-      font-weight: 600;
-    }
-    [data-theme="dark"] .meal-table th {
-      background: #363875;
-      color: #ffe;
-    }
-    [data-theme="dark"] .meal-table td {
-      background: #22223e;
-      color: #eaeafd;
-    }
-    .budget-warning {
-      color: #d63a3a;
-      font-weight: bold;
-      margin: 8px 0;
-      font-size: 1.07em;
-    }
-    .budget-ok {
-      color: #27ae60;
-      font-weight: bold;
-      margin: 8px 0;
-      font-size: 1.07em;
-    }
-    .meal-desc {
-      font-size: 0.97em;
-      color: #666;
-    }
-    [data-theme="dark"] .meal-desc { color: #aaa; }
+    [data-theme="dark"] .security-note { background: #322e1a; color: #ffd180; border-color: #ffd180;}
+    .profile-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px;}
+    @media (max-width: 700px) { .profile-row { grid-template-columns: 1fr; gap: 10px;} .container { padding: 7px; } .card { padding: 14px 7px; }}
+    .meal-table { width: 100%; border-collapse: collapse; margin-bottom: 16px;}
+    .meal-table th, .meal-table td { border: 1px solid #ddd; padding: 7px 8px; text-align: left;}
+    .meal-table th { background: var(--primary); color: var(--white); font-weight: 600;}
+    [data-theme="dark"] .meal-table th { background: #363875; color: #ffe;}
+    [data-theme="dark"] .meal-table td { background: #22223e; color: #eaeafd;}
+    .meal-desc { font-size: 0.97em; color: #666;}
+    [data-theme="dark"] .meal-desc { color: #aaa;}
     .logout-btn {
-      position: absolute;
-      top: 15px;
-      right: 18px;
-      background: rgba(255,255,255,0.16);
-      color: var(--secondary);
-      border: none;
-      padding: 7px 17px;
-      border-radius: 18px;
-      cursor: pointer;
-      font-size: 1em;
+      position: absolute; top: 15px; right: 18px;
+      background: rgba(255,255,255,0.16); color: var(--secondary);
+      border: none; padding: 7px 17px; border-radius: 18px; cursor: pointer; font-size: 1em;
     }
-    [data-theme="dark"] .logout-btn {
-      background: #232340;
-      color: #ffb84d;
-    }
-    .recipe-link {
-      color: var(--primary);
-      text-decoration: underline;
-      font-size: 0.98em;
-      margin-left: 6px;
-    }
-    .recipe-link:hover { color: var(--secondary); }
-    .toggle-switch {
-      display: inline-block;
-      width: 46px;
-      height: 26px;
-      position: relative;
-      margin-left: 10px;
-      vertical-align: middle;
-    }
-    .toggle-switch input { display: none; }
+    [data-theme="dark"] .logout-btn { background: #232340; color: #ffb84d;}
+    .meal-link { color: var(--primary); cursor:pointer; text-decoration: underline;}
+    .meal-link:hover { color: var(--secondary);}
+    .meal-recipe-content { background: #f7f7fa; padding:10px 12px; border-radius:7px; margin:7px 0; color:#222;}
+    [data-theme="dark"] .meal-recipe-content { background: #232340; color: #ffe;}
+    .toggle-switch { display: inline-block; width: 46px; height: 26px; position: relative; margin-left: 10px; vertical-align: middle;}
+    .toggle-switch input { display: none;}
     .slider {
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: #ccc;
-      border-radius: 26px;
-      transition: background 0.3s;
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      background: #ccc; border-radius: 26px; transition: background 0.3s;
     }
     .slider:before {
-      content: "";
-      position: absolute;
-      height: 20px; width: 20px;
-      left: 3px; bottom: 3px;
-      background: #fff;
-      border-radius: 50%;
-      transition: 0.3s;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.09);
+      content: ""; position: absolute; height: 20px; width: 20px; left: 3px; bottom: 3px;
+      background: #fff; border-radius: 50%; transition: 0.3s; box-shadow: 0 1px 2px rgba(0,0,0,0.09);
     }
-    input:checked + .slider {
-      background: var(--primary);
-    }
-    input:checked + .slider:before {
-      transform: translateX(20px);
-      background: #ffe;
-    }
+    input:checked + .slider { background: var(--primary);}
+    input:checked + .slider:before { transform: translateX(20px); background: #ffe;}
+    .no-plan-message { color: #b20000; font-size: 1.13em; font-weight: bold; margin: 16px 0;}
   </style>
 </head>
 <body>
@@ -288,9 +98,7 @@
       <h1>🍽️ Smart Calorie & Meal Planner</h1>
       <p>Your personalized nutrition and meal planning assistant</p>
     </div>
-
     <button class="logout-btn hidden" id="logoutBtn" onclick="logout()">Logout</button>
-
     <!-- LOGIN / REGISTER -->
     <div id="auth-screen" class="card">
       <h2>Welcome! Sign Up or Log In</h2>
@@ -310,7 +118,6 @@
       <button class="btn btn-primary" onclick="login()" style="width: 100%; margin-bottom: 10px;">Login</button>
       <button class="btn btn-secondary" onclick="showRegister()" style="width: 100%;">Create New Account</button>
     </div>
-
     <!-- REGISTER SCREEN -->
     <div id="register-screen" class="card hidden">
       <h2>Create Your Account</h2>
@@ -385,7 +192,6 @@
       <button class="btn btn-primary" style="width:100%;" onclick="register()">Create Account</button>
       <button class="btn btn-secondary" style="width:100%;margin-top:8px;" onclick="showLogin()">Back to Login</button>
     </div>
-
     <!-- MAIN APP -->
     <div id="main-app" class="hidden">
       <div class="menu-bar">
@@ -401,16 +207,12 @@
           </label>
         </span>
       </div>
-
-      <!-- MEAL PLAN PANEL -->
       <div id="panel-mealplan">
         <div class="card">
           <h2>Your Personalized Meal Plan</h2>
           <div id="mealplan-content"></div>
         </div>
       </div>
-
-      <!-- PROFILE PANEL -->
       <div id="panel-profile" class="hidden">
         <div class="card">
           <h2>Edit Profile & Preferences</h2>
@@ -482,71 +284,241 @@
   </div>
   <script>
     // --- Simple region-based price modifiers (by US state code or Canadian province, fallback to 1.0) ---
-    // For demo only, not real-time. In real use, connect to an API.
     const US_CA_REGION_PRICE_MODIFIERS = {
-      // US
       "CA": 1.3, "NY": 1.23, "TX": 0.95, "FL": 1.02, "WA": 1.18, "AZ": 1.00, "IL": 1.10, "NC": 0.97, "GA": 0.97, "PA": 1.10, "OH": 1.05,
-      // Canada
       "ON": 1.18, "QC": 1.16, "BC": 1.22, "AB": 1.02, "MB": 1.12, "NS": 1.15, "SK": 1.08, "NB": 1.14, "NL": 1.15, "PE": 1.13
     };
-
-    // --- Meals Database (expandable; demo meals only) ---
-    // Each meal: { name, calories, basePrice, type: breakfast/lunch/dinner/snack, regionAdj: true/false }
+    // --- Enriched meals database with macros and recipes ---
     const MEALS = [
-      // Breakfast
-      { name: "Scrambled Eggs & Toast", calories: 320, basePrice: 1.75, type: "breakfast" },
-      { name: "Oatmeal with Fruit", calories: 290, basePrice: 1.15, type: "breakfast" },
-      { name: "Greek Yogurt & Berries", calories: 210, basePrice: 2.25, type: "breakfast" },
-      { name: "Banana Pancakes", calories: 350, basePrice: 2.00, type: "breakfast" },
-      { name: "Avocado Toast", calories: 270, basePrice: 1.60, type: "breakfast" },
-      // Lunch
-      { name: "Rice & Beans Bowl", calories: 410, basePrice: 2.50, type: "lunch" },
-      { name: "Turkey Sandwich", calories: 340, basePrice: 2.10, type: "lunch" },
-      { name: "Chicken Salad", calories: 370, basePrice: 3.00, type: "lunch" },
-      { name: "Veggie Wrap", calories: 320, basePrice: 2.30, type: "lunch" },
-      { name: "Lentil Soup & Bread", calories: 330, basePrice: 2.40, type: "lunch" },
-      // Dinner
-      { name: "Spaghetti Marinara", calories: 450, basePrice: 2.75, type: "dinner" },
-      { name: "Baked Chicken Thighs & Potatoes", calories: 520, basePrice: 3.80, type: "dinner" },
-      { name: "Stir Fry Veggies & Rice", calories: 400, basePrice: 2.70, type: "dinner" },
-      { name: "Turkey Meatballs & Pasta", calories: 480, basePrice: 3.50, type: "dinner" },
-      { name: "Tofu Curry & Rice", calories: 390, basePrice: 2.90, type: "dinner" },
-      // Snacks
-      { name: "Apple & Peanut Butter", calories: 160, basePrice: 0.90, type: "snack" },
-      { name: "Banana", calories: 95, basePrice: 0.55, type: "snack" },
-      { name: "Carrots & Hummus", calories: 130, basePrice: 1.20, type: "snack" },
-      { name: "String Cheese", calories: 80, basePrice: 0.80, type: "snack" },
-      { name: "Trail Mix", calories: 170, basePrice: 1.10, type: "snack" }
+      {
+        name: "Scrambled Eggs & Toast", type: "breakfast",
+        basePrice: 1.75, calories: 320, protein: 14, carbs: 28, fat: 13,
+        recipe: {
+          ingredients: [ "2 eggs", "2 slices whole wheat bread", "1 tsp butter", "Salt & pepper" ],
+          steps: [
+            "Whisk eggs with salt and pepper.",
+            "Heat butter in pan and scramble eggs.",
+            "Toast bread.",
+            "Serve eggs with toast."
+          ]
+        }
+      },
+      {
+        name: "Oatmeal with Fruit", type: "breakfast",
+        basePrice: 1.15, calories: 290, protein: 8, carbs: 54, fat: 4,
+        recipe: {
+          ingredients: [ "1/2 cup rolled oats", "1 cup water or milk", "1/2 banana", "1/4 cup berries" ],
+          steps: [
+            "Combine oats and liquid, cook until soft.",
+            "Top with sliced banana and berries."
+          ]
+        }
+      },
+      {
+        name: "Greek Yogurt & Berries", type: "breakfast",
+        basePrice: 2.25, calories: 210, protein: 15, carbs: 25, fat: 3,
+        recipe: {
+          ingredients: [ "1 cup nonfat Greek yogurt", "1/2 cup mixed berries", "1 tsp honey (optional)" ],
+          steps: [
+            "Spoon yogurt into bowl.",
+            "Top with berries and drizzle honey."
+          ]
+        }
+      },
+      {
+        name: "Banana Pancakes", type: "breakfast",
+        basePrice: 2.00, calories: 350, protein: 10, carbs: 62, fat: 7,
+        recipe: {
+          ingredients: [ "1 ripe banana", "2 eggs", "1/2 cup flour", "1/2 tsp baking powder", "Splash milk", "Butter or oil for pan" ],
+          steps: [
+            "Mash banana and mix with eggs and milk.",
+            "Stir in flour and baking powder.",
+            "Cook pancakes on greased skillet until golden."
+          ]
+        }
+      },
+      {
+        name: "Avocado Toast", type: "breakfast",
+        basePrice: 1.60, calories: 270, protein: 7, carbs: 30, fat: 14,
+        recipe: {
+          ingredients: [ "2 slices whole wheat bread", "1/2 avocado", "Salt & pepper", "Lemon juice" ],
+          steps: [
+            "Toast bread.",
+            "Mash avocado with lemon, salt, pepper.",
+            "Spread avocado mixture on toast."
+          ]
+        }
+      },
+      {
+        name: "Rice & Beans Bowl", type: "lunch",
+        basePrice: 2.50, calories: 410, protein: 13, carbs: 80, fat: 4,
+        recipe: {
+          ingredients: [ "1 cup cooked rice", "1/2 cup cooked beans", "Salsa", "Chopped cilantro" ],
+          steps: [
+            "Warm rice and beans.",
+            "Top with salsa and cilantro."
+          ]
+        }
+      },
+      {
+        name: "Turkey Sandwich", type: "lunch",
+        basePrice: 2.10, calories: 340, protein: 18, carbs: 38, fat: 9,
+        recipe: {
+          ingredients: [ "2 slices whole wheat bread", "3 slices deli turkey", "Lettuce", "Tomato", "1 tsp mayo" ],
+          steps: [
+            "Layer turkey, lettuce, tomato on bread.",
+            "Spread mayo, assemble sandwich."
+          ]
+        }
+      },
+      {
+        name: "Chicken Salad", type: "lunch",
+        basePrice: 3.00, calories: 370, protein: 26, carbs: 11, fat: 22,
+        recipe: {
+          ingredients: [ "1 cup cooked, chopped chicken", "2 tbsp mayo", "Chopped celery", "Chopped onion", "Lettuce leaves" ],
+          steps: [
+            "Mix chicken, mayo, celery, onion.",
+            "Serve on lettuce leaves."
+          ]
+        }
+      },
+      {
+        name: "Veggie Wrap", type: "lunch",
+        basePrice: 2.30, calories: 320, protein: 8, carbs: 46, fat: 9,
+        recipe: {
+          ingredients: [ "1 whole wheat tortilla", "1/2 cup hummus", "Shredded carrots", "Spinach", "Cucumber slices" ],
+          steps: [
+            "Spread hummus on tortilla.",
+            "Layer veggies, roll up."
+          ]
+        }
+      },
+      {
+        name: "Lentil Soup & Bread", type: "lunch",
+        basePrice: 2.40, calories: 330, protein: 15, carbs: 52, fat: 4,
+        recipe: {
+          ingredients: [ "1 cup lentil soup", "1 slice whole wheat bread" ],
+          steps: [
+            "Heat soup, serve with bread."
+          ]
+        }
+      },
+      {
+        name: "Spaghetti Marinara", type: "dinner",
+        basePrice: 2.75, calories: 450, protein: 13, carbs: 78, fat: 7,
+        recipe: {
+          ingredients: [ "2 oz dry spaghetti", "1 cup marinara", "Parmesan (optional)", "Basil" ],
+          steps: [
+            "Cook spaghetti, heat marinara.",
+            "Combine, top with parmesan and basil."
+          ]
+        }
+      },
+      {
+        name: "Baked Chicken Thighs & Potatoes", type: "dinner",
+        basePrice: 3.80, calories: 520, protein: 28, carbs: 32, fat: 27,
+        recipe: {
+          ingredients: [ "1 chicken thigh", "1 cup potatoes", "Olive oil", "Herbs, salt & pepper" ],
+          steps: [
+            "Toss potatoes in oil, herbs.",
+            "Roast chicken and potatoes at 400°F for 35min."
+          ]
+        }
+      },
+      {
+        name: "Stir Fry Veggies & Rice", type: "dinner",
+        basePrice: 2.70, calories: 400, protein: 8, carbs: 74, fat: 7,
+        recipe: {
+          ingredients: [ "1 cup rice", "2 cups mixed veggies", "Soy sauce", "1 tbsp oil" ],
+          steps: [
+            "Stir fry veggies in oil.",
+            "Add cooked rice and soy sauce, stir until hot."
+          ]
+        }
+      },
+      {
+        name: "Turkey Meatballs & Pasta", type: "dinner",
+        basePrice: 3.50, calories: 480, protein: 25, carbs: 57, fat: 16,
+        recipe: {
+          ingredients: [ "3 turkey meatballs", "1 cup pasta", "1/2 cup marinara", "Parmesan" ],
+          steps: [
+            "Cook pasta, heat meatballs in marinara.",
+            "Serve together with cheese."
+          ]
+        }
+      },
+      {
+        name: "Tofu Curry & Rice", type: "dinner",
+        basePrice: 2.90, calories: 390, protein: 14, carbs: 52, fat: 12,
+        recipe: {
+          ingredients: [ "1/2 block firm tofu", "1 cup cooked rice", "1/2 cup curry sauce", "Peas" ],
+          steps: [
+            "Cube tofu, cook in curry sauce with peas.",
+            "Serve over rice."
+          ]
+        }
+      },
+      {
+        name: "Apple & Peanut Butter", type: "snack",
+        basePrice: 0.90, calories: 160, protein: 4, carbs: 29, fat: 6,
+        recipe: {
+          ingredients: [ "1 apple", "1 tbsp peanut butter" ],
+          steps: [
+            "Slice apple, dip in peanut butter."
+          ]
+        }
+      },
+      {
+        name: "Banana", type: "snack",
+        basePrice: 0.55, calories: 95, protein: 1, carbs: 24, fat: 0,
+        recipe: {
+          ingredients: [ "1 banana" ],
+          steps: [
+            "Peel and eat."
+          ]
+        }
+      },
+      {
+        name: "Carrots & Hummus", type: "snack",
+        basePrice: 1.20, calories: 130, protein: 3, carbs: 21, fat: 5,
+        recipe: {
+          ingredients: [ "1 cup carrot sticks", "2 tbsp hummus" ],
+          steps: [
+            "Dip carrots in hummus."
+          ]
+        }
+      },
+      {
+        name: "String Cheese", type: "snack",
+        basePrice: 0.80, calories: 80, protein: 7, carbs: 1, fat: 6,
+        recipe: {
+          ingredients: [ "1 stick string cheese" ],
+          steps: [
+            "Unwrap and eat."
+          ]
+        }
+      },
+      {
+        name: "Trail Mix", type: "snack",
+        basePrice: 1.10, calories: 170, protein: 5, carbs: 15, fat: 10,
+        recipe: {
+          ingredients: [ "1/4 cup trail mix" ],
+          steps: [
+            "Enjoy as a snack."
+          ]
+        }
+      }
     ];
-
-    // --- User storage and session ---
     let users = {};
     let currentUser = null;
     let theme = 'light';
-
-    function saveUsers() {
-      localStorage.setItem('plannerUsers', JSON.stringify(users));
-    }
-    function loadUsers() {
-      users = JSON.parse(localStorage.getItem('plannerUsers') || '{}');
-    }
-    function saveSession() {
-      if(currentUser) localStorage.setItem('plannerCurrent', currentUser);
-    }
-    function loadSession() {
-      currentUser = localStorage.getItem('plannerCurrent') || null;
-    }
-    function clearSession() {
-      localStorage.removeItem('plannerCurrent');
-    }
-    function saveTheme(newTheme) {
-      localStorage.setItem('plannerTheme', newTheme);
-    }
-    function loadTheme() {
-      return localStorage.getItem('plannerTheme') || 'light';
-    }
-
-    // --- Theme handling ---
+    function saveUsers() { localStorage.setItem('plannerUsers', JSON.stringify(users)); }
+    function loadUsers() { users = JSON.parse(localStorage.getItem('plannerUsers') || '{}'); }
+    function saveSession() { if(currentUser) localStorage.setItem('plannerCurrent', currentUser); }
+    function loadSession() { currentUser = localStorage.getItem('plannerCurrent') || null; }
+    function clearSession() { localStorage.removeItem('plannerCurrent'); }
+    function saveTheme(newTheme) { localStorage.setItem('plannerTheme', newTheme); }
+    function loadTheme() { return localStorage.getItem('plannerTheme') || 'light'; }
     function setTheme(newTheme) {
       theme = newTheme;
       document.documentElement.setAttribute('data-theme', theme);
@@ -554,11 +526,7 @@
       document.getElementById('theme-label').textContent = theme === 'dark' ? '🌙' : '🌞';
       saveTheme(theme);
     }
-    function toggleTheme() {
-      setTheme(theme === 'light' ? 'dark' : 'light');
-    }
-
-    // --- UI Navigation ---
+    function toggleTheme() { setTheme(theme === 'light' ? 'dark' : 'light'); }
     function showPanel(panel) {
       document.getElementById('panel-mealplan').classList.toggle('hidden', panel !== 'mealplan');
       document.getElementById('panel-profile').classList.toggle('hidden', panel !== 'profile');
@@ -583,14 +551,8 @@
       document.getElementById('logoutBtn').classList.remove('hidden');
       showPanel('mealplan');
     }
-
-    // --- Auth ---
-    function validateEmail(email) {
-      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    }
-    function validatePin(pin) {
-      return /^\d{4}$/.test(pin);
-    }
+    function validateEmail(email) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);}
+    function validatePin(pin) { return /^\d{4}$/.test(pin);}
     function login() {
       loadUsers();
       const email = document.getElementById('email').value.trim().toLowerCase();
@@ -641,8 +603,6 @@
       document.getElementById('email').value = '';
       document.getElementById('pin').value = '';
     }
-
-    // --- Profile Form Handling ---
     function loadProfileForm() {
       const user = getUser();
       if(!user) return;
@@ -674,29 +634,22 @@
       renderMealPlan();
       alert('Profile updated!');
     }
-
-    // --- User helpers ---
-    function getUser() {
-      loadUsers();
-      return currentUser ? users[currentUser] : null;
-    }
+    function getUser() { loadUsers(); return currentUser ? users[currentUser] : null;}
     function getAgeFromBirthdate(birthdate) {
       if(!birthdate) return '';
       const diff = Date.now() - new Date(birthdate).getTime();
       return Math.floor(diff / (365.25 * 24 * 60 * 60 * 1000));
     }
     function extractRegion(zip) {
-      // US: first 2 digits for state (rough), CA: first 2 letters for province
       if(!zip) return null;
       const z = zip.replace(/\s/g, '').toUpperCase();
-      if(/^\d{5}(-\d{4})?$/.test(z)) { // US ZIP
+      if(/^\d{5}(-\d{4})?$/.test(z)) {
         const stateFromZip = {
           '90': 'CA', '91': 'CA', '92': 'CA', '10': 'NY', '11': 'NY', '75': 'TX', '76': 'TX', '33': 'FL', '34': 'FL', '98': 'WA', '85': 'AZ', '60': 'IL', '27': 'NC', '30': 'GA', '15': 'PA', '43': 'OH'
-          // ...add more as needed
         };
         return stateFromZip[z.substring(0,2)] || 'US';
       }
-      if(/^[A-Z]\d[A-Z]/.test(z)) { // Canadian
+      if(/^[A-Z]\d[A-Z]/.test(z)) {
         const provinceFromPC = {
           'M': 'ON', 'H': 'QC', 'V': 'BC', 'T': 'AB', 'R': 'MB', 'B': 'NS', 'S': 'SK', 'E': 'NB', 'A': 'NL', 'C': 'PE'
         };
@@ -708,8 +661,6 @@
       const region = extractRegion(zip);
       return US_CA_REGION_PRICE_MODIFIERS[region] || 1.0;
     }
-
-    // --- Calories & TDEE ---
     function calculateCalories(user) {
       const age = getAgeFromBirthdate(user.birthdate);
       if(!age || !user.height || !user.weight) return 2000;
@@ -724,8 +675,6 @@
       else if(user.goal === 'gain') tdee += 300;
       return Math.max(1200, Math.round(tdee));
     }
-
-    // --- Allergy Filtering ---
     function filterMealsByAllergies(meals, allergies) {
       if(!allergies) return meals.slice();
       const allergyList = allergies.toLowerCase().split(',').map(a => a.trim()).filter(a => a.length > 0);
@@ -736,152 +685,128 @@
         )
       );
     }
-
-    // --- AI-style Meal Plan Generator (variety, budget, leftovers) ---
     function generateMealPlan(user) {
       const calTarget = calculateCalories(user);
       const zip = user.zip, budget = user.budget || 75;
       const priceMod = getPriceModifier(zip);
       const allergies = user.allergies;
-      // 7 days, breakfast/lunch/dinner/snack
       const days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
-      const plan = [];
-      let usedMeals = { breakfast: [], lunch: [], dinner: [], snack: [] }; // track for variety
-      let leftovers = { breakfast: [], lunch: [], dinner: [], snack: [] };
-      let totalCost = 0;
-      let warning = "";
-
-      // For each day, select meals with as much variety as possible, only repeat if needed for budget
-      for(let d=0; d<7; ++d) {
-        let dayMeals = [], dayCalories = 0, dayCost = 0;
-        ['breakfast','lunch','dinner'].forEach(type => {
-          // Try to pick a meal not used more than once yet
-          let pool = filterMealsByAllergies(MEALS.filter(m => m.type === type), allergies)
-            .filter(m => usedMeals[type].filter(u => u === m.name).length < 2);
-          if(pool.length === 0) pool = filterMealsByAllergies(MEALS.filter(m => m.type === type), allergies); // allow repeats
-          let meal = pool[Math.floor(Math.random()*pool.length)];
-          if(!meal) return; // fallback
-          // Price adjust
-          const mealCost = Math.round(meal.basePrice * priceMod * 100)/100;
-          // If over budget, try using leftovers (repeat a meal from previous day)
-          if(totalCost + dayCost + mealCost > budget && leftovers[type].length) {
-            meal = leftovers[type][0];
-          }
-          dayMeals.push({ ...meal, price: mealCost });
-          dayCalories += meal.calories;
-          dayCost += mealCost;
-          usedMeals[type].push(meal.name);
-        });
-        // Snacks only if still under daily cal target and budget
-        let snackPool = filterMealsByAllergies(MEALS.filter(m => m.type === 'snack'), allergies)
-          .filter(m => usedMeals['snack'].filter(u => u === m.name).length < 2);
-        if(snackPool.length > 0 && dayCalories < calTarget-100) {
-          let snack = snackPool[Math.floor(Math.random()*snackPool.length)];
-          const snackCost = Math.round(snack.basePrice * priceMod * 100)/100;
-          if(totalCost + dayCost + snackCost <= budget) {
-            dayMeals.push({ ...snack, price: snackCost });
-            usedMeals['snack'].push(snack.name);
-            dayCalories += snack.calories;
-            dayCost += snackCost;
-          }
-        }
-        // Add to leftovers for next day (simulate leftovers only for main meals, not snacks)
-        ['breakfast','lunch','dinner'].forEach(type => {
-          leftovers[type] = [dayMeals.find(m => m.type === type)]; // can eat yesterday's meal as leftover
-        });
-        totalCost += dayCost;
-        plan.push({ day: days[d], meals: dayMeals, calories: dayCalories, cost: dayCost });
-      }
-      // If over budget, remove snacks until budget fits, then fallback to leftovers if needed (demo logic)
-      let budgetTest = plan.reduce((sum, day) => sum+day.cost,0);
-      if(budgetTest > budget) {
+      let bestPlan = null;
+      let bestCost = Infinity;
+      for(let attempt=0; attempt<25; ++attempt) {
+        let usedMeals = { breakfast: [], lunch: [], dinner: [], snack: [] };
+        let leftovers = { breakfast: [], lunch: [], dinner: [], snack: [] };
+        let plan = [];
+        let totalCost = 0;
+        let failed = false;
         for(let d=0; d<7; ++d) {
-          let snacks = plan[d].meals.filter(m => m.type === 'snack');
-          if(snacks.length) {
-            plan[d].meals = plan[d].meals.filter(m => m.type !== 'snack');
-            plan[d].cost -= snacks.reduce((s,m) => s+m.price,0);
-            plan[d].calories -= snacks.reduce((s,m) => s+m.calories,0);
-            budgetTest = plan.reduce((sum, day) => sum+day.cost,0);
-            if(budgetTest <= budget) break;
-          }
-        }
-      }
-      // If still over budget, fallback to leftovers for breakfast/lunch/dinner
-      if(budgetTest > budget) {
-        for(let d=1; d<7; ++d) {
-          ['breakfast','lunch','dinner'].forEach(type => {
-            let prevMeal = plan[d-1].meals.find(m => m.type === type);
-            if(prevMeal) {
-              let idx = plan[d].meals.findIndex(m => m.type === type);
-              if(idx >= 0) {
-                plan[d].meals[idx] = prevMeal;
-                plan[d].cost = plan[d].meals.reduce((sum,m) => sum+m.price,0);
-                plan[d].calories = plan[d].meals.reduce((sum,m) => sum+m.calories,0);
-              }
+          let dayMeals = [], dayCalories = 0, dayCost = 0;
+          for(let mealType of ['breakfast','lunch','dinner']) {
+            let pool = filterMealsByAllergies(MEALS.filter(m => m.type === mealType), allergies)
+              .filter(m => usedMeals[mealType].filter(u => u === m.name).length < 2);
+            if(pool.length === 0) pool = filterMealsByAllergies(MEALS.filter(m => m.type === mealType), allergies);
+            let meal = pool[Math.floor(Math.random()*pool.length)];
+            if(!meal) { failed = true; break; }
+            const mealCost = Math.round(meal.basePrice * priceMod * 100)/100;
+            if(totalCost + dayCost + mealCost > budget && leftovers[mealType].length) {
+              meal = leftovers[mealType][0];
             }
+            const mealActualCost = Math.round(meal.basePrice * priceMod * 100)/100;
+            if(totalCost + dayCost + mealActualCost > budget) { failed = true; break; }
+            dayMeals.push({ ...meal, price: mealActualCost });
+            dayCalories += meal.calories;
+            dayCost += mealActualCost;
+            usedMeals[mealType].push(meal.name);
+          }
+          let snackPool = filterMealsByAllergies(MEALS.filter(m => m.type === 'snack'), allergies)
+            .filter(m => usedMeals['snack'].filter(u => u === m.name).length < 2);
+          if(snackPool.length > 0 && dayCalories < calTarget-100) {
+            let snack = snackPool[Math.floor(Math.random()*snackPool.length)];
+            const snackCost = Math.round(snack.basePrice * priceMod * 100)/100;
+            if(totalCost + dayCost + snackCost <= budget) {
+              dayMeals.push({ ...snack, price: snackCost });
+              usedMeals['snack'].push(snack.name);
+              dayCalories += snack.calories;
+              dayCost += snackCost;
+            }
+          }
+          ['breakfast','lunch','dinner'].forEach(type => {
+            leftovers[type] = [dayMeals.find(m => m.type === type)];
           });
-          budgetTest = plan.reduce((sum, day) => sum+day.cost,0);
-          if(budgetTest <= budget) break;
+          totalCost += dayCost;
+          plan.push({ day: days[d], meals: dayMeals, calories: dayCalories, cost: dayCost });
+        }
+        if(!failed && totalCost <= budget && totalCost < bestCost) {
+          bestPlan = { plan, totalCost, calories: calTarget };
+          bestCost = totalCost;
         }
       }
-      // Final warning if still over
-      if(plan.reduce((sum, day) => sum+day.cost,0) > budget) {
-        warning = "⚠️ Budget could not be met with these preferences. Please adjust your budget or profile.";
-      }
-      return { plan, totalCost: plan.reduce((sum, d) => sum+d.cost,0), calories: calTarget, warning };
+      return bestPlan;
     }
-
-    // --- Meal Plan UI ---
     function renderMealPlan() {
       const user = getUser();
       if(!user) return;
-      const { plan, totalCost, calories, warning } = generateMealPlan(user);
+      const result = generateMealPlan(user);
       const budget = user.budget || 75;
-      let html = `
-        <div>
-          <strong>Calories Target:</strong> ${calories} kcal/day
-          <br><strong>Budget:</strong> $${budget.toFixed(2)} / week
-          <br><strong>Estimated total cost of this plan:</strong> $${totalCost.toFixed(2)}
-          <div class="${totalCost > budget ? 'budget-warning':'budget-ok'}">
-            ${totalCost > budget ? 'Over Budget!':'Within Budget'}
-          </div>
-          ${warning ? `<div class="budget-warning">${warning}</div>` : ''}
-        </div>
-        <div style="margin-top:18px;">
-      `;
-      html += `<table class="meal-table"><thead><tr><th>Day</th><th>Meal</th><th>Calories</th><th>Price</th></tr></thead><tbody>`;
-      plan.forEach(day => {
-        day.meals.forEach((meal,i) => {
-          html += `<tr>
-            ${i===0?`<td rowspan="${day.meals.length}">${day.day}</td>`:''}
-            <td>${meal.type.charAt(0).toUpperCase()+meal.type.slice(1)}: ${meal.name}
-              <a class="recipe-link" href="https://www.pinterest.com/search/pins/?q=${encodeURIComponent(meal.name)}%20recipe" target="_blank">(recipe)</a>
-            </td>
-            <td>${meal.calories}</td>
-            <td>$${meal.price.toFixed(2)}</td>
-          </tr>`;
+      let html = `<div>
+          <strong>Calories Target:</strong> ${calculateCalories(user)} kcal/day
+          <br><strong>Your Budget:</strong> $${budget.toFixed(2)} / week
+        </div><div style="margin-top:18px;">`;
+      if(!result) {
+        html += `<div class="no-plan-message">No meal plan can be generated under your current budget and preferences.<br>Please increase your budget or relax restrictions.</div>`;
+      } else {
+        html += `<strong>Plan Total Cost:</strong> $${result.totalCost.toFixed(2)}<br>`;
+        html += `<table class="meal-table"><thead><tr><th>Day</th><th>Meal</th><th>Calories</th><th>Protein</th><th>Carbs</th><th>Fat</th><th>Price</th></tr></thead><tbody>`;
+        result.plan.forEach(day => {
+          day.meals.forEach((meal,i) => {
+            html += `<tr>
+              ${i===0?`<td rowspan="${day.meals.length}">${day.day}</td>`:''}
+              <td>
+                <span class="meal-link" onclick="toggleRecipe('${meal.name.replace(/'/g,"\\'")}')">${meal.name}</span>
+                <div class="meal-recipe-content hidden" id="rec_${meal.name.replace(/[^a-zA-Z0-9]/g,'_')}"></div>
+              </td>
+              <td>${meal.calories}</td>
+              <td>${meal.protein}g</td>
+              <td>${meal.carbs}g</td>
+              <td>${meal.fat}g</td>
+              <td>$${meal.price ? meal.price.toFixed(2):'?'}</td>
+            </tr>`;
+          });
         });
-      });
-      html += `</tbody></table></div>`;
+        html += `</tbody></table>`;
+      }
+      html += `</div>`;
       document.getElementById('mealplan-content').innerHTML = html;
     }
-
-    // --- INIT ---
+    function toggleRecipe(name) {
+      const meal = MEALS.find(m => m.name === name);
+      if(!meal) return;
+      const id = `rec_${name.replace(/[^a-zA-Z0-9]/g,'_')}`;
+      const el = document.getElementById(id);
+      if(!el) return;
+      if(!el.innerHTML) {
+        el.innerHTML = `
+          <div>
+            <strong>Ingredients:</strong>
+            <ul>${meal.recipe.ingredients.map(ing=>`<li>${ing}</li>`).join('')}</ul>
+            <strong>Steps:</strong>
+            <ol>${meal.recipe.steps.map(step=>`<li>${step}</li>`).join('')}</ol>
+            <strong>Macros:</strong> ${meal.protein}g protein, ${meal.carbs}g carbs, ${meal.fat}g fat, ${meal.calories} kcal
+          </div>
+        `;
+      }
+      el.classList.toggle('hidden');
+    }
+    window.toggleRecipe = toggleRecipe;
     function initApp() {
-      // Date max for birthdate fields
       document.getElementById('reg-birthdate').max = new Date().toISOString().split('T')[0];
       document.getElementById('profile-birthdate').max = new Date().toISOString().split('T')[0];
-      // Theme
       setTheme(loadTheme());
       document.getElementById('theme-switch').addEventListener('change', toggleTheme);
-      // Try auto-login
       loadUsers();
       loadSession();
-      if(currentUser && users[currentUser]) {
-        showMainApp();
-      }
+      if(currentUser && users[currentUser]) showMainApp();
     }
-
     window.onload = initApp;
   </script>
 </body>
